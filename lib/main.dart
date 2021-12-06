@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     // Using MultiProvider is convenient when providing multiple objects.
     return MultiProvider(
       providers: [
-        // In this sample app, CatalogModel never changes, so a simple Provider
+        // In here CatalogModel never changes, so a simple Provider
         // is sufficient.
         Provider(create: (context) => CatalogModel()),
         // CartModel is implemented as a ChangeNotifier, which calls for the use
