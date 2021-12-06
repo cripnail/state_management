@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
         theme: appTheme,
         initialRoute: '/',
         routes: {
-          // '/': (context) => const MyLogin(),
           '/': (context) => const MyCatalog(),
           '/cart': (context) => const MyCart(),
         },
