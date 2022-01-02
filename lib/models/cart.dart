@@ -1,12 +1,15 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:state_management/models/catalog.dart';
 
-class CartModel extends ChangeNotifier {
+class CartModel extends StateNotifier {
   /// The private field backing [catalog].
   late CatalogModel _catalog;
 
   /// Internal, private state of the cart. Stores the ids of each item.
   final List<int> _itemIds = [];
+
+  CartModel(state) : super(state);
 
   /// The current catalog. Used to construct items from numeric ids.
   CatalogModel get catalog => _catalog;
@@ -16,7 +19,8 @@ class CartModel extends ChangeNotifier {
     // Notify listeners, in case the new catalog provides information
     // different from the previous one. For example, availability of an item
     // might have changed.
-    notifyListeners();
+
+    // notifyListeners();
   }
 
   /// List of items in the cart.
@@ -31,13 +35,15 @@ class CartModel extends ChangeNotifier {
     _itemIds.add(item.id);
     // This line tells [Model] that it should rebuild the widgets that
     // depend on it.
-    notifyListeners();
+
+    // notifyListeners();
   }
 
   void remove(Item item) {
     _itemIds.remove(item.id);
     // Don't forget to tell dependent widgets to rebuild _every time_
     // you change the model.
-    notifyListeners();
+
+    // notifyListeners();
   }
 }
