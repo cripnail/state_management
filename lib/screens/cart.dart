@@ -5,7 +5,8 @@ import 'package:state_management/state/app_state.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class MyCart extends StatelessWidget {
-  const MyCart({Key? key, required this.store, required this.cart}) : super(key: key);
+  const MyCart({Key? key, required this.store, required this.cart})
+      : super(key: key);
   final Store<AppState, CartModel> store;
   final CartModel cart;
 
@@ -23,7 +24,9 @@ class MyCart extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(32),
-                child: _CartList(cart: cart,),
+                child: _CartList(
+                  cart: cart,
+                ),
               ),
             ),
             const Divider(height: 4, color: Colors.black),
@@ -37,6 +40,7 @@ class MyCart extends StatelessWidget {
 
 class _CartList extends StatelessWidget {
   final CartModel cart;
+
   const _CartList({required this.cart});
 
   @override
@@ -81,10 +85,7 @@ class _CartTotal extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Consumer<CartModel>(
-                  //     builder: (context, cart, child) =>
-                          Text('\$${cart.totalPrice}', style: hugeStyle),
-                  // ),
+                  Text('\$${cart.totalPrice}', style: hugeStyle),
                   const SizedBox(width: 24),
                   TextButton(
                     onPressed: () {

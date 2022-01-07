@@ -15,7 +15,7 @@ class MyCatalog extends StatelessWidget {
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-                    (context, index) => _MyListItem(index)),
+                (context, index) => _MyListItem(index)),
           ),
         ],
       ),
@@ -25,28 +25,23 @@ class MyCatalog extends StatelessWidget {
 
 class _AddButton extends StatelessWidget {
   final Item item;
+  final List<CartModel> items;
 
-  const _AddButton({required this.item, Key? key}) : super(key: key);
+  const _AddButton({required this.item, Key? key, required this.items})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isInCart(AppState state, String id) {
-      final List<CartModel> items = state.items;
-     return (cart) => cart.items.contains(item);
-        // items.indexWhere((cartProduct) => cartProduct.id == id) > -1;
-    }
-    // var isInCart = context.select<CartModel, bool>(
-    //   // Here, we are only interested whether [item] is inside the cart.
-    //       (cart) => cart.items.contains(item),
-    // );
+    final bool isInCart =
+        items.where((cart) => cart.items.contains(item)) as bool;
 
     return TextButton(
       onPressed: isInCart
           ? null
           : () {
-        var cart = context.read<CartModel>();
-        cart.add(item);
-      },
+              var cart = context.read<CartModel>();
+              cart.add(item);
+            },
       style: ButtonStyle(
         overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
           if (states.contains(MaterialState.pressed)) {
@@ -85,12 +80,12 @@ class _MyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme.headline6;
     var item = context.select<CatalogModel, Item>(
       // Here, we are only interested in the item at [index]. We don't care
       // about any other change.
-          (catalog) => catalog.getByPosition(index),
+      (catalog) => catalog.getByPosition(index),
     );
-    var textTheme = Theme.of(context).textTheme.headline6;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -109,7 +104,7 @@ class _MyListItem extends StatelessWidget {
               child: Text(item.name, style: textTheme),
             ),
             const SizedBox(width: 24),
-            _AddButton(item: item),
+            _AddButton(item: item, items: const [],),
           ],
         ),
       ),
