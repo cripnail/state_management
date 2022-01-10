@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobx/mobx.dart';
 
 /// A proxy of the catalog of items the user can buy.
 ///
