@@ -14,27 +14,22 @@ void main() {
     appReducer,
     initialState: AppState.initial(),
   );
-  runApp(MyApp(store: store));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final Store<AppState> store;
-
-  MyApp({required this.store});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider(
-      store: store,
-      child: MaterialApp(
-        title: 'Flutter Redux Demo',
-        theme: appTheme,
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const MyCatalog(),
-          '/cart': (context) => MyCart(store: store,),
-        },
+    return MaterialApp(
+      title: 'Shopping Cart',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        fontFamily: 'ProductSans',
+        primaryColor: const Color.fromRGBO(243, 113, 95, 1),
       ),
+      home: const MyCatalog(),
     );
   }
 }
