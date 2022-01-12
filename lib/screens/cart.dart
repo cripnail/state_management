@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:state_management/home/stores/home_store.dart';
 import 'package:state_management/models/cart.dart';
 
 class MyCart extends StatelessWidget {
@@ -57,6 +58,7 @@ class _CartList extends StatelessWidget {
 }
 
 class _CartTotal extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     var hugeStyle =
@@ -69,7 +71,7 @@ class _CartTotal extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Observer(
-                builder: (builder: (_)) =>
+                builder: (_)  =>
                     Text('\$${cart.totalPrice}', style: hugeStyle)),
             const SizedBox(width: 24),
             TextButton(

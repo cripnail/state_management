@@ -4,9 +4,13 @@ import 'package:state_management/models/catalog.dart';
 
 part 'cart.g.dart';
 
-class CartModel = _CartModel with _$CartModel;
+class CartModel = _CartModelBase with _$CartModel;
 
-abstract class _CartModel with Store{
+abstract class _CartModelBase with Store {
+  _CartModelBase(this.item);
+
+  late final Item item;
+
   /// The private field backing [catalog].
   late CatalogModel _catalog;
 
@@ -21,15 +25,18 @@ abstract class _CartModel with Store{
   }
 
   @computed
+
   /// List of items in the cart.
   List<Item> get items => _itemIds.map((id) => _catalog.getById(id)).toList();
 
   @computed
+
   /// The current total price of all items.
   int get totalPrice =>
       items.fold(0, (total, current) => total + current.price);
 
   @action
+
   /// Adds [item] to cart. This is the only way to modify the cart from outside.
   void add(Item item) {
     _itemIds.add(item.id);
@@ -39,4 +46,10 @@ abstract class _CartModel with Store{
   void remove(Item item) {
     _itemIds.remove(item.id);
   }
+
+  @override
+  int get hashCode => item.hashCode;
+
+  @override
+  bool operator ==(other) => other is CartModel && other.item == item;
 }

@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:state_management/home/stores/home_store.dart';
 import 'package:state_management/models/cart.dart';
 import 'package:state_management/models/catalog.dart';
 
-class MyCatalog extends StatelessWidget {
+class MyCatalog extends StatefulWidget {
   const MyCatalog({Key? key}) : super(key: key);
 
+  @override
+  State<MyCatalog> createState() => _MyCatalogState();
+}
+
+class _MyCatalogState extends State<MyCatalog> {
+  late HomeStore cart;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +55,8 @@ class _AddButton extends StatelessWidget {
         // We are using context.read() here because the callback
         // is executed whenever the user taps the button. In other
         // words, it is executed outside the build method.
-        var cart = context.read<CartModel>();
+        // var cart = context.read<CartModel>();
+        var cart = HomeStore();
         cart.add(item);
       },
       style: ButtonStyle(
@@ -91,8 +98,6 @@ class _MyListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var item = context.select<CatalogModel, Item>(
-      // Here, we are only interested in the item at [index]. We don't care
-      // about any other change.
           (catalog) => catalog.getByPosition(index),
     );
     var textTheme = Theme.of(context).textTheme.headline6;
