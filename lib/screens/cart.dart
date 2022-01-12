@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/models/cart.dart';
-import 'package:state_management/state/state_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'catalog.dart';
+import 'package:state_management/state/provider_registry.dart';
 
 class MyCart extends StatelessWidget {
   const MyCart({Key? key}) : super(key: key);

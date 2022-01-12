@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:state_management/models/cart.dart';
 import 'package:state_management/models/catalog.dart';
-import '../common/provider_registry.dart';
+import '../state/provider_registry.dart';
 
 // final catalogProvider = cartListProvider.select((v) => v.catalog);
 // final cardProvider = cartListProvider.select((v) => v.items);
