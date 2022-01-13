@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:equatable/equatable.dart';
 
 /// A proxy of the catalog of items the user can buy.
 ///
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 ///
 /// For simplicity, the catalog is expected to be immutable (no products are
 /// expected to be added, removed or changed during the execution of the app).
-class CatalogModel {
+class CatalogModel extends Equatable {
   static List<String> itemNames = [
     'Code Smell',
     'Control Flow',
@@ -37,23 +38,22 @@ class CatalogModel {
     // is also its id.
     return getById(position);
   }
+
+  @override
+  List<Object?> get props => [itemNames];
 }
 
-@immutable
-class Item {
+class Item extends Equatable {
   final int id;
   final String name;
   final Color color;
   final int price = 42;
 
   Item(this.id, this.name)
-  // To make the sample app look nicer, each item is given one of the
-  // Material Design primary colors.
+      // To make the sample app look nicer, each item is given one of the
+      // Material Design primary colors.
       : color = Colors.primaries[id % Colors.primaries.length];
 
   @override
-  int get hashCode => id;
-
-  @override
-  bool operator ==(Object other) => other is Item && other.id == id;
+  List<Object?> get props => [id, name, color, price];
 }
