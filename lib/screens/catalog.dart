@@ -19,7 +19,7 @@ class MyCatalog extends StatelessWidget {
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-                    (context, index) => _MyListItem(index)),
+                (context, index) => _MyListItem(index)),
           ),
         ],
       ),
@@ -44,20 +44,20 @@ class _AddButton extends ConsumerWidget {
     //   // Here, we are only interested whether [item] is inside the cart.
     //       (cart) => cart.items.contains(item),
     // );
-    final isInCart = ref.watch(cartListProvider.select(
-            (cart) => cart.items.contains(item)));
+    final isInCart =
+        ref.watch(cartListProvider.select((cart) => cart.contains(item)));
 
     return TextButton(
       onPressed: isInCart
           ? null
           : () {
-        // If the item is not in cart, we let the user add it.
-        // We are using context.read() here because the callback
-        // is executed whenever the user taps the button. In other
-        // words, it is executed outside the build method.
-        var cart = ref.read<CartModel>(isInCart);
-        cart.add(item);
-      },
+              // If the item is not in cart, we let the user add it.
+              // We are using context.read() here because the callback
+              // is executed whenever the user taps the button. In other
+              // words, it is executed outside the build method.
+              var cart = ref.read(cartListProvider);
+              cart.add(item);
+            },
       style: ButtonStyle(
         overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
           if (states.contains(MaterialState.pressed)) {
@@ -89,7 +89,7 @@ class _MyAppBar extends StatelessWidget {
   }
 }
 
-class _MyListItem extends  ConsumerWidget {
+class _MyListItem extends ConsumerWidget {
   final int index;
 
   const _MyListItem(this.index, {Key? key}) : super(key: key);
@@ -101,8 +101,8 @@ class _MyListItem extends  ConsumerWidget {
     //   // about any other change.
     //       (catalog) => catalog.getByPosition(index),
     // );
-    var item = ref.watch(cartListProvider.select(
-            (catalog) => catalog.getByPosition(index)));
+    var item = ref.watch(
+        cartListProvider.select((catalog) => catalog.getByPosition(index)));
     var textTheme = Theme.of(context).textTheme.headline6;
 
     return Padding(
