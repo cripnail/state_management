@@ -96,13 +96,7 @@ class _MyListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // var item = context.select<CatalogModel, Item>(
-    //   // Here, we are only interested in the item at [index]. We don't care
-    //   // about any other change.
-    //       (catalog) => catalog.getByPosition(index),
-    // );
-    var item = ref.watch(
-        cartListProvider.select((catalog) => catalog.getByPosition(index)));
+    var item = ref.watch(cartListProvider.select((catalog) => catalog[index]));
     var textTheme = Theme.of(context).textTheme.headline6;
 
     return Padding(

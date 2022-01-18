@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:state_management/models/catalog.dart';
 import 'package:state_management/state/provider_registry.dart';
 
 class MyCart extends StatelessWidget {
@@ -63,7 +64,7 @@ class _CartTotal extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var hugeStyle =
-    Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48);
+        Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48);
 
     return SizedBox(
       height: 200,
@@ -73,10 +74,9 @@ class _CartTotal extends ConsumerWidget {
           children: [
             // Consumer<CartModel>(
             //     builder: (context, cart, child) =>
-                    Text(
-                        // '\$${cart.totalPrice}',
-                        "\$${ref.watch(cartListProvider).totalPrice}" ,
-                        style: hugeStyle),
+            Text(
+                "\$${ref.watch(cartListProvider).fold(0, (num previousValue, Item element) => previousValue + element.price)}",
+                style: hugeStyle),
             const SizedBox(width: 24),
             TextButton(
               onPressed: () {
