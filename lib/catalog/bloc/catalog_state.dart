@@ -12,7 +12,7 @@ class CatalogLoading extends CatalogState {}
 class CatalogLoaded extends CatalogState {
   const CatalogLoaded(this.catalog);
 
-  final CatalogModel catalog;
+  final Catalog catalog;
 
   @override
   List<Object> get props => [catalog];
