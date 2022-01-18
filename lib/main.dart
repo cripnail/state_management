@@ -4,11 +4,17 @@ import 'package:state_management/cart/cart.dart';
 import 'package:state_management/catalog/catalog.dart';
 import 'package:state_management/shopping_repository.dart';
 
-class ShoppingCart extends StatelessWidget {
-  static const routeKey = "ShoppingCart";
-  const ShoppingCart({Key? key, required this.shoppingRepository}) : super(key: key);
+void main() {
+  runApp(const MyApp());
+}
 
-  final ShoppingRepository shoppingRepository;
+class MyApp extends StatelessWidget {
+  static const routeKey = "ShoppingCart";
+
+  const MyApp({Key? key, this.shoppingRepository})
+      : super(key: key);
+
+  final ShoppingRepository? shoppingRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +22,12 @@ class ShoppingCart extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => CatalogBloc(
-            shoppingRepository: shoppingRepository,
+            shoppingRepository: shoppingRepository!,
           )..add(CatalogStarted()),
         ),
         BlocProvider(
           create: (_) => CartBloc(
-            shoppingRepository: shoppingRepository,
+            shoppingRepository: shoppingRepository!,
           )..add(CartStarted()),
         )
       ],
