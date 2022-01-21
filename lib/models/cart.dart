@@ -1,23 +1,14 @@
-import 'package:flutter/foundation.dart';
-import 'package:state_management/models/catalog.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'catalog.dart';
 
-class CartModel extends ChangeNotifier {
+class CartModel extends StateNotifier<List<Item>> {
   /// The private field backing [catalog].
   late CatalogModel _catalog;
 
   /// Internal, private state of the cart. Stores the ids of each item.
   final List<int> _itemIds = [];
 
-  /// The current catalog. Used to construct items from numeric ids.
-  CatalogModel get catalog => _catalog;
-
-  set catalog(CatalogModel newCatalog) {
-    _catalog = newCatalog;
-    // Notify listeners, in case the new catalog provides information
-    // different from the previous one. For example, availability of an item
-    // might have changed.
-    notifyListeners();
-  }
+  CartModel(List<Item> state) : super(state);
 
   /// List of items in the cart.
   List<Item> get items => _itemIds.map((id) => _catalog.getById(id)).toList();
@@ -29,15 +20,9 @@ class CartModel extends ChangeNotifier {
   /// Adds [item] to cart. This is the only way to modify the cart from outside.
   void add(Item item) {
     _itemIds.add(item.id);
-    // This line tells [Model] that it should rebuild the widgets that
-    // depend on it.
-    notifyListeners();
   }
 
   void remove(Item item) {
     _itemIds.remove(item.id);
-    // Don't forget to tell dependent widgets to rebuild _every time_
-    // you change the model.
-    notifyListeners();
   }
 }

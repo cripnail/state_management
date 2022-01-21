@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:state_management/models/cart.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:state_management/models/catalog.dart';
+import 'package:state_management/state/provider_registry.dart';
 
 class MyCatalog extends StatelessWidget {
   const MyCatalog({Key? key}) : super(key: key);
@@ -23,23 +23,21 @@ class MyCatalog extends StatelessWidget {
   }
 }
 
-class _AddButton extends StatelessWidget {
+class _AddButton extends HookConsumerWidget {
   final Item item;
 
   const _AddButton({required this.item, Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // The context.select() method will let you listen to changes to
     // a *part* of a model. You define a function that "selects" (i.e. returns)
     // the part you're interested in, and the provider package will not rebuild
     // this widget unless that particular part of the model changes.
     //
     // This can lead to significant performance improvements.
-    var isInCart = context.select<CartModel, bool>(
-      // Here, we are only interested whether [item] is inside the cart.
-          (cart) => cart.items.contains(item),
-    );
+    final isInCart =
+    ref.watch(cartListProvider.select((cart) => cart.contains(item)));
 
     return TextButton(
       onPressed: isInCart
@@ -49,7 +47,7 @@ class _AddButton extends StatelessWidget {
         // We are using context.read() here because the callback
         // is executed whenever the user taps the button. In other
         // words, it is executed outside the build method.
-        var cart = context.read<CartModel>();
+        var cart = ref.read(cartListProvider);
         cart.add(item);
       },
       style: ButtonStyle(
@@ -83,18 +81,14 @@ class _MyAppBar extends StatelessWidget {
   }
 }
 
-class _MyListItem extends StatelessWidget {
+class _MyListItem extends HookConsumerWidget {
   final int index;
 
   const _MyListItem(this.index, {Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var item = context.select<CatalogModel, Item>(
-      // Here, we are only interested in the item at [index]. We don't care
-      // about any other change.
-          (catalog) => catalog.getByPosition(index),
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    var item = ref.watch(cartListProvider.select((catalog) => catalog[index]));
     var textTheme = Theme.of(context).textTheme.headline6;
 
     return Padding(
