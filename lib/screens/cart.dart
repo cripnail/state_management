@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:state_management/home/stores/home_store.dart';
 import 'package:state_management/models/cart.dart';
+import 'package:state_management/store/cart_store.dart';
+import 'package:state_management/models/catalog.dart';
 
 class MyCart extends StatelessWidget {
   const MyCart({Key? key}) : super(key: key);
@@ -32,37 +34,55 @@ class MyCart extends StatelessWidget {
   }
 }
 
-class _CartList extends StatelessWidget {
+class _CartList extends StatefulWidget {
+  late final ShoppingCart shoppingCart;
+
+  @override
+  State<_CartList> createState() => _CartListState();
+}
+
+class _CartListState extends State<_CartList> {
   @override
   Widget build(BuildContext context) {
     var itemNameStyle = Theme.of(context).textTheme.headline6;
-    var cart = context.watch<CartModel>();
+    final cart = widget.shoppingCart.obs;
 
-    return ListView.builder(
-      itemCount: cart.items.length,
-      itemBuilder: (context, index) => ListTile(
-        leading: const Icon(Icons.done),
-        trailing: IconButton(
-          icon: const Icon(Icons.remove_circle_outline),
-          onPressed: () {
-            cart.remove(cart.items[index]);
-          },
+    return Observer(builder: (_) {
+      return ListView.builder(
+        itemCount: cart.length,
+        itemBuilder: (context, index) => ListTile(
+          leading: const Icon(Icons.done),
+          trailing: IconButton(
+            icon: const Icon(Icons.remove_circle_outline),
+            onPressed: () {
+              final item = cart[index];
+              cart.remove(item);
+            },
+          ),
+          title: Text(
+            cart.name,
+            style: itemNameStyle,
+          ),
         ),
-        title: Text(
-          cart.items[index].name,
-          style: itemNameStyle,
-        ),
-      ),
-    );
+      );
+    });
   }
 }
 
-class _CartTotal extends StatelessWidget {
+class _CartTotal extends StatefulWidget {
+  late final ShoppingCart shoppingCart;
+
+  @override
+  State<_CartTotal> createState() => _CartTotalState();
+}
+
+class _CartTotalState extends State<_CartTotal> {
 
   @override
   Widget build(BuildContext context) {
     var hugeStyle =
-    Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48);
+        Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48);
+    final cart = widget.shoppingCart.obs;
 
     return SizedBox(
       height: 200,
@@ -70,9 +90,7 @@ class _CartTotal extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Observer(
-                builder: (_)  =>
-                    Text('\$${cart.totalPrice}', style: hugeStyle)),
+            Observer(builder: (_) => Text('\$${cart.total}', style: hugeStyle)),
             const SizedBox(width: 24),
             TextButton(
               onPressed: () {

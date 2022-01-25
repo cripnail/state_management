@@ -9,7 +9,7 @@ class CartModel = _CartModelBase with _$CartModel;
 abstract class _CartModelBase with Store {
   _CartModelBase(this.item);
 
-  late final Item item;
+  final Item item;
 
   /// The private field backing [catalog].
   late CatalogModel _catalog;
@@ -32,8 +32,7 @@ abstract class _CartModelBase with Store {
   @computed
 
   /// The current total price of all items.
-  int get totalPrice =>
-      items.fold(0, (total, current) => total + current.price);
+  int get total => items.fold(0, (total, current) => total + current.price);
 
   @action
 
@@ -41,15 +40,4 @@ abstract class _CartModelBase with Store {
   void add(Item item) {
     _itemIds.add(item.id);
   }
-
-  @action
-  void remove(Item item) {
-    _itemIds.remove(item.id);
-  }
-
-  @override
-  int get hashCode => item.hashCode;
-
-  @override
-  bool operator ==(other) => other is CartModel && other.item == item;
 }
