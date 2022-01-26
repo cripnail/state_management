@@ -104,6 +104,7 @@ class _MyListItem extends StatelessWidget {
     var item = context.select<CatalogModel, Item>(
       (catalog) => catalog.getByPosition(index),
     );
+
     var textTheme = Theme.of(context).textTheme.headline6;
 
     return Padding(
