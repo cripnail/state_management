@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:state_management/home/stores/home_store.dart';
-import 'package:state_management/models/cart.dart';
 import 'package:state_management/store/cart_store.dart';
-import 'package:state_management/models/catalog.dart';
 
 class MyCart extends StatelessWidget {
   const MyCart({Key? key}) : super(key: key);

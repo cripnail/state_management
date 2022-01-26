@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/home/stores/home_store.dart';
 import 'package:state_management/models/cart.dart';
 import 'package:state_management/store/cart_store.dart';
 import 'package:state_management/models/catalog.dart';
