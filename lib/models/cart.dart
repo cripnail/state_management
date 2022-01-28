@@ -33,11 +33,11 @@ abstract class _CartModelBase with Store {
 
   /// The current total price of all items.
   int get total => items.fold(0, (total, current) => total + current.price);
-
-  @action
-
-  /// Adds [item] to cart. This is the only way to modify the cart from outside.
-  void add(Item item) {
-    _itemIds.add(item.id);
-  }
+//
+// @action
+//
+// /// Adds [item] to cart. This is the only way to modify the cart from outside.
+// void add(Item item) {
+//   _itemIds.add(item.id);
+// }
 }

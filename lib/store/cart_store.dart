@@ -17,6 +17,21 @@ abstract class _ShoppingCartBase with Store {
   double get total =>
       obs.fold(0, (previousValue, element) => previousValue + element.total);
 
+  @action
+  void addProduct(Item item) {
+    obs.add(CartModel(item));
+  }
+
+  @action
+  void removeProduct(CartModel item) {
+    obs.remove(item);
+  }
+
+  @action
+  void updateCart() {
+    obs.length;
+  }
+
   bool isInCart(Item item) {
     if (obs.contains(CartModel(item))) {
       return true;

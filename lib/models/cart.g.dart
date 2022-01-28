@@ -22,20 +22,6 @@ mixin _$CartModel on _CartModelBase, Store {
           Computed<int>(() => super.total, name: '_CartModelBase.total'))
       .value;
 
-  final _$_CartModelBaseActionController =
-      ActionController(name: '_CartModelBase');
-
-  @override
-  void add(Item item) {
-    final _$actionInfo = _$_CartModelBaseActionController.startAction(
-        name: '_CartModelBase.add');
-    try {
-      return super.add(item);
-    } finally {
-      _$_CartModelBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
   @override
   String toString() {
     return '''

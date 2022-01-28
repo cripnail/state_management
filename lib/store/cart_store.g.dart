@@ -38,6 +38,42 @@ mixin _$ShoppingCart on _ShoppingCartBase, Store {
     });
   }
 
+  final _$_ShoppingCartBaseActionController =
+      ActionController(name: '_ShoppingCartBase');
+
+  @override
+  void addProduct(Item item) {
+    final _$actionInfo = _$_ShoppingCartBaseActionController.startAction(
+        name: '_ShoppingCartBase.addProduct');
+    try {
+      return super.addProduct(item);
+    } finally {
+      _$_ShoppingCartBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void removeProduct(CartModel item) {
+    final _$actionInfo = _$_ShoppingCartBaseActionController.startAction(
+        name: '_ShoppingCartBase.removeProduct');
+    try {
+      return super.removeProduct(item);
+    } finally {
+      _$_ShoppingCartBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void updateCart() {
+    final _$actionInfo = _$_ShoppingCartBaseActionController.startAction(
+        name: '_ShoppingCartBase.updateCart');
+    try {
+      return super.updateCart();
+    } finally {
+      _$_ShoppingCartBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:state_management/models/cart.dart';
 import 'package:state_management/store/cart_store.dart';
 import 'package:state_management/models/catalog.dart';
@@ -19,8 +20,10 @@ class _MyCatalogState extends State<MyCatalog> {
           _MyAppBar(),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
           SliverList(
-            delegate: SliverChildBuilderDelegate(
-                (context, index) => _MyListItem(index)),
+            delegate:
+                SliverChildBuilderDelegate((context, index) => _MyListItem(
+                      index,
+                    )),
           ),
         ],
       ),
@@ -28,39 +31,37 @@ class _MyCatalogState extends State<MyCatalog> {
   }
 }
 
-class _AddButton extends StatelessWidget {
-  final Item item;
-  final CartModel items;
+class _AddButton extends StatefulWidget {
+  const _AddButton({
+    Key? key,
+  }) : super(key: key);
 
-  const _AddButton({required this.item, Key? key, required this.items})
-      : super(key: key);
+  @override
+  State<_AddButton> createState() => _AddButtonState();
+}
+
+class _AddButtonState extends State<_AddButton> {
+  final cartController = ShoppingCart();
+  late final Item item;
+
+  void updateCart(Item item) {
+    if (cartController.isInCart(item)) {
+      cartController.removeProduct(
+        CartModel(item),
+      );
+    } else {
+      cartController.addProduct(item);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // The context.select() method will let you listen to changes to
-    // a *part* of a model. You define a function that "selects" (i.e. returns)
-    // the part you're interested in, and the provider package will not rebuild
-    // this widget unless that particular part of the model changes.
-    //
-    // This can lead to significant performance improvements.
-    // var isInCart = context.select<CartModel, bool>(
-    //   // Here, we are only interested whether [item] is inside the cart.
-    //       (cart) => cart.items.contains(item),
-    // );
-    final ShoppingCart isInCart;
-
     return TextButton(
-      onPressed: isInCart
+      onPressed: cartController.isInCart(item)
           ? null
           : () {
               // If the item is not in cart, we let the user add it.
-              // We are using context.read() here because the callback
-              // is executed whenever the user taps the button. In other
-              // words, it is executed outside the build method.
-              // var cart = context.read<CartModel>();
-
-              // cart.add(item);
-              items.add(item);
+              cartController.addProduct(item);
             },
       style: ButtonStyle(
         overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
@@ -70,7 +71,7 @@ class _AddButton extends StatelessWidget {
           return null; // Defer to the widget's default.
         }),
       ),
-      child: isInCart
+      child: cartController.isInCart(item)
           ? const Icon(Icons.check, semanticLabel: 'ADDED')
           : const Text('ADD'),
     );
@@ -94,39 +95,42 @@ class _MyAppBar extends StatelessWidget {
 }
 
 class _MyListItem extends StatelessWidget {
-  final int index;
+  final CartModel? items;
+  final Item? item;
 
-  const _MyListItem(this.index, {Key? key}) : super(key: key);
+  const _MyListItem(int index, {Key? key, this.items, this.item})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var item = context.select<CatalogModel, Item>(
-      (catalog) => catalog.getByPosition(index),
-    );
-
+    // var cartItem = context<CatalogModel, Item>(
+    //   (catalog) => catalog.getByPosition(index),
+    // );
     var textTheme = Theme.of(context).textTheme.headline6;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: LimitedBox(
-        maxHeight: 48,
-        child: Row(
-          children: [
-            AspectRatio(
-              aspectRatio: 1,
-              child: Container(
-                color: item.color,
+    return Observer(builder: (_) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: LimitedBox(
+          maxHeight: 48,
+          child: Row(
+            children: [
+              AspectRatio(
+                aspectRatio: 1,
+                child: Container(
+                  color: items?.item.color,
+                ),
               ),
-            ),
-            const SizedBox(width: 24),
-            Expanded(
-              child: Text(item.name, style: textTheme),
-            ),
-            const SizedBox(width: 24),
-            _AddButton(item: item),
-          ],
+              const SizedBox(width: 24),
+              Expanded(
+                child: Text(items!.item.name, style: textTheme),
+              ),
+              const SizedBox(width: 24),
+              const _AddButton(),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

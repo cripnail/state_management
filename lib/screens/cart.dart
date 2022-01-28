@@ -52,8 +52,8 @@ class _CartListState extends State<_CartList> {
           trailing: IconButton(
             icon: const Icon(Icons.remove_circle_outline),
             onPressed: () {
-              final item = cart[index];
-              cart.remove(item);
+              final cartItem = cart[index];
+              cart.remove(cartItem);
             },
           ),
           title: Text(
@@ -74,12 +74,10 @@ class _CartTotal extends StatefulWidget {
 }
 
 class _CartTotalState extends State<_CartTotal> {
-
   @override
   Widget build(BuildContext context) {
     var hugeStyle =
         Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48);
-    final cart = widget.shoppingCart.obs;
 
     return SizedBox(
       height: 200,
@@ -87,7 +85,10 @@ class _CartTotalState extends State<_CartTotal> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Observer(builder: (_) => Text('\$${cart.total}', style: hugeStyle)),
+            Observer(
+                builder: (_) => Text(
+                    '\$${widget.shoppingCart.total.toStringAsFixed(2)}',
+                    style: hugeStyle)),
             const SizedBox(width: 24),
             TextButton(
               onPressed: () {
