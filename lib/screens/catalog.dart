@@ -12,6 +12,9 @@ class MyCatalog extends StatefulWidget {
 }
 
 class _MyCatalogState extends State<MyCatalog> {
+  late final CartModel items;
+  late final Item item;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +26,8 @@ class _MyCatalogState extends State<MyCatalog> {
             delegate:
                 SliverChildBuilderDelegate((context, index) => _MyListItem(
                       index,
+                      item: item,
+                      items: items,
                     )),
           ),
         ],
@@ -95,10 +100,11 @@ class _MyAppBar extends StatelessWidget {
 }
 
 class _MyListItem extends StatelessWidget {
-  final CartModel? items;
-  final Item? item;
+  final CartModel items;
+  final Item item;
 
-  const _MyListItem(int index, {Key? key, this.items, this.item})
+  const _MyListItem(int index,
+      {Key? key, required this.items, required this.item})
       : super(key: key);
 
   @override
@@ -118,12 +124,12 @@ class _MyListItem extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 1,
                 child: Container(
-                  color: items?.item.color,
+                  color: items.item.color,
                 ),
               ),
               const SizedBox(width: 24),
               Expanded(
-                child: Text(items!.item.name, style: textTheme),
+                child: Text(items.item.name, style: textTheme),
               ),
               const SizedBox(width: 24),
               const _AddButton(),
