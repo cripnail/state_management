@@ -77,7 +77,7 @@ class _CartTotalState extends State<_CartTotal> {
   @override
   Widget build(BuildContext context) {
     var hugeStyle =
-        Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48);
+    Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48);
 
     return SizedBox(
       height: 200,

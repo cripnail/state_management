@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:state_management/common/extensions.dart';
 import 'package:state_management/models/cart.dart';
 import 'package:state_management/store/cart_store.dart';
 import 'package:state_management/models/catalog.dart';
+import 'package:state_management/store/empty_state.dart';
+import 'package:state_management/store/home_controller.dart';
 
-class MyCatalog extends StatefulWidget {
-  const MyCatalog({Key? key}) : super(key: key);
+class CatalogPage extends StatefulWidget {
+  const CatalogPage({Key? key}) : super(key: key);
 
   @override
-  State<MyCatalog> createState() => _MyCatalogState();
+  State<CatalogPage> createState() => _CatalogPageState();
 }
 
-class _MyCatalogState extends State<MyCatalog> {
-  late final CartModel items;
-  late final Item item;
+class _CatalogPageState extends State<CatalogPage> {
+  final controller = HomeController();
+  final cartController = ShoppingCart();
+
+  late final CatalogModel catalog;
+
+  @override
+  void initState() {
+    controller.getProducts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +33,47 @@ class _MyCatalogState extends State<MyCatalog> {
         slivers: [
           _MyAppBar(),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
-          SliverList(
-            delegate:
-                SliverChildBuilderDelegate((context, index) => _MyListItem(
-                      index,
-                      item: item,
-                      items: items,
-                    )),
+          Observer(
+            builder: (_) {
+              if (controller.appStatus == AppStatus.loading) {
+                return const SliverFillRemaining(
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              } else if (controller.appStatus == AppStatus.success) {
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => _CatalogListItem(
+                      catalog.getByPosition(index),
+                    ),
+                    childCount: CatalogModel.itemNames.length,
+                  ),
+                );
+              } else if (controller.appStatus == AppStatus.empty) {
+                return const EmptyState();
+              } else if (controller.appStatus == AppStatus.error) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "There was a problem!",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .apply(color: Colors.red),
+                      ),
+                      Text(
+                        controller.errorMessage.isNotEmpty
+                            ? controller.errorMessage
+                            : controller.appStatus.message(),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return const EmptyState();
+            },
           ),
         ],
       ),
@@ -36,49 +81,56 @@ class _MyCatalogState extends State<MyCatalog> {
   }
 }
 
-class _AddButton extends StatefulWidget {
-  const _AddButton({
-    Key? key,
-  }) : super(key: key);
+class _AddButton extends StatelessWidget {
+  const _AddButton({Key? key, required this.item}) : super(key: key);
 
-  @override
-  State<_AddButton> createState() => _AddButtonState();
-}
-
-class _AddButtonState extends State<_AddButton> {
-  final cartController = ShoppingCart();
-  late final Item item;
-
-  void updateCart(Item item) {
-    if (cartController.isInCart(item)) {
-      cartController.removeProduct(
-        CartModel(item),
-      );
-    } else {
-      cartController.addProduct(item);
-    }
-  }
+  final Item item;
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: cartController.isInCart(item)
-          ? null
-          : () {
-              // If the item is not in cart, we let the user add it.
-              cartController.addProduct(item);
-            },
-      style: ButtonStyle(
-        overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-          if (states.contains(MaterialState.pressed)) {
-            return Theme.of(context).primaryColor;
-          }
-          return null; // Defer to the widget's default.
-        }),
-      ),
-      child: cartController.isInCart(item)
-          ? const Icon(Icons.check, semanticLabel: 'ADDED')
-          : const Text('ADD'),
+    final theme = Theme.of(context);
+    return Observer(
+      builder: (_) {
+        final controller = HomeController();
+        if (controller.appStatus == AppStatus.loading) {
+          return const CircularProgressIndicator();
+        } else if (controller.appStatus == AppStatus.success) {
+          final cartController = ShoppingCart();
+          return TextButton(
+            style: TextButton.styleFrom(onSurface: theme.primaryColor),
+            onPressed: cartController.isInCart(item)
+                ? null
+                : () => cartController.addProduct(item),
+            child: cartController.isInCart(item)
+                ? const Icon(Icons.check, semanticLabel: 'ADDED')
+                : const Text('ADD'),
+          );
+        } else if (controller.appStatus == AppStatus.empty) {
+          return const EmptyState();
+        } else if (controller.appStatus == AppStatus.error) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "There was a problem!",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .apply(color: Colors.red),
+                ),
+                Text(
+                  controller.errorMessage.isNotEmpty
+                      ? controller.errorMessage
+                      : controller.appStatus.message(),
+                ),
+              ],
+            ),
+          );
+        }
+        return const EmptyState();
+      },
     );
   }
 }
@@ -99,44 +151,28 @@ class _MyAppBar extends StatelessWidget {
   }
 }
 
-class _MyListItem extends StatelessWidget {
-  final CartModel items;
-  final Item item;
+class _CatalogListItem extends StatelessWidget {
+  const _CatalogListItem(this.item, {Key? key}) : super(key: key);
 
-  const _MyListItem(int index,
-      {Key? key, required this.items, required this.item})
-      : super(key: key);
+  final Item item;
 
   @override
   Widget build(BuildContext context) {
-    // var cartItem = context<CatalogModel, Item>(
-    //   (catalog) => catalog.getByPosition(index),
-    // );
-    var textTheme = Theme.of(context).textTheme.headline6;
-
-    return Observer(builder: (_) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: LimitedBox(
-          maxHeight: 48,
-          child: Row(
-            children: [
-              AspectRatio(
-                aspectRatio: 1,
-                child: Container(
-                  color: items.item.color,
-                ),
-              ),
-              const SizedBox(width: 24),
-              Expanded(
-                child: Text(items.item.name, style: textTheme),
-              ),
-              const SizedBox(width: 24),
-              const _AddButton(),
-            ],
-          ),
+    final textTheme = Theme.of(context).textTheme.headline6;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: LimitedBox(
+        maxHeight: 48,
+        child: Row(
+          children: [
+            AspectRatio(aspectRatio: 1, child: ColoredBox(color: item.color)),
+            const SizedBox(width: 24),
+            Expanded(child: Text(item.name, style: textTheme)),
+            const SizedBox(width: 24),
+            _AddButton(item: item),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 }
