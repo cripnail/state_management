@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:state_management/common/constants.dart';
 import 'package:state_management/common/extensions.dart';
-import 'package:state_management/models/cart.dart';
 import 'package:state_management/store/cart_store.dart';
 import 'package:state_management/models/catalog.dart';
 import 'package:state_management/store/empty_state.dart';
@@ -18,8 +18,6 @@ class _CatalogPageState extends State<CatalogPage> {
   final controller = HomeController();
   final cartController = ShoppingCart();
 
-  late final CatalogModel catalog;
-
   @override
   void initState() {
     controller.getProducts();
@@ -34,7 +32,7 @@ class _CatalogPageState extends State<CatalogPage> {
           _MyAppBar(),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
           Observer(
-            builder: (_) {
+            builder: (state) {
               if (controller.appStatus == AppStatus.loading) {
                 return const SliverFillRemaining(
                   child: Center(child: CircularProgressIndicator()),

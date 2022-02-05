@@ -1,3 +1,4 @@
+
 enum AppStatus { success, loading, error, empty }
 
 extension StateMessage on AppStatus {
