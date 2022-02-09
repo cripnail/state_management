@@ -42,11 +42,11 @@ mixin _$ShoppingCart on _ShoppingCartBase, Store {
       ActionController(name: '_ShoppingCartBase');
 
   @override
-  void addProduct(Item item) {
+  void addItemToCart(Item item) {
     final _$actionInfo = _$_ShoppingCartBaseActionController.startAction(
         name: '_ShoppingCartBase.addProduct');
     try {
-      return super.addProduct(item);
+      return super.addItemToCart(item);
     } finally {
       _$_ShoppingCartBaseActionController.endAction(_$actionInfo);
     }

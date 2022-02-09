@@ -18,7 +18,7 @@ abstract class _ShoppingCartBase with Store {
       obs.fold(0, (previousValue, element) => previousValue + element.total);
 
   @action
-  void addProduct(Item item) {
+  void addItemToCart(Item item) {
     obs.add(CartModel(item));
   }
 

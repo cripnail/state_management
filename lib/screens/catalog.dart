@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:state_management/common/constants.dart';
+import 'package:state_management/models/catalog.dart';
+import 'package:state_management/store/catalog_state.dart';
+import 'package:state_management/store/catalog_state.dart';
+import 'package:state_management/store/catalog_state.dart';
+import 'package:state_management/store/catalog_state.dart';
+import 'package:state_management/store/catalog_state.dart';
+import 'package:state_management/store/catalog_state.dart';
 import 'package:state_management/common/extensions.dart';
 import 'package:state_management/store/cart_store.dart';
 import 'package:state_management/models/catalog.dart';
@@ -32,7 +38,7 @@ class _CatalogPageState extends State<CatalogPage> {
           _MyAppBar(),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
           Observer(
-            builder: (state) {
+            builder: (_) {
               if (controller.appStatus == AppStatus.loading) {
                 return const SliverFillRemaining(
                   child: Center(child: CircularProgressIndicator()),
@@ -40,9 +46,7 @@ class _CatalogPageState extends State<CatalogPage> {
               } else if (controller.appStatus == AppStatus.success) {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) => _CatalogListItem(
-                      catalog.getByPosition(index),
-                    ),
+                    (context, index) => _CatalogListItem(),
                     childCount: CatalogModel.itemNames.length,
                   ),
                 );
@@ -98,7 +102,7 @@ class _AddButton extends StatelessWidget {
             style: TextButton.styleFrom(onSurface: theme.primaryColor),
             onPressed: cartController.isInCart(item)
                 ? null
-                : () => cartController.addProduct(item),
+                : () => cartController.addItemToCart(item),
             child: cartController.isInCart(item)
                 ? const Icon(Icons.check, semanticLabel: 'ADDED')
                 : const Text('ADD'),
