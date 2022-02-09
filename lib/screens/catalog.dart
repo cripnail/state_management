@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:state_management/models/catalog.dart';
-import 'package:state_management/store/catalog_state.dart';
-import 'package:state_management/store/catalog_state.dart';
-import 'package:state_management/store/catalog_state.dart';
-import 'package:state_management/store/catalog_state.dart';
-import 'package:state_management/store/catalog_state.dart';
-import 'package:state_management/store/catalog_state.dart';
 import 'package:state_management/common/extensions.dart';
 import 'package:state_management/store/cart_store.dart';
-import 'package:state_management/models/catalog.dart';
 import 'package:state_management/store/empty_state.dart';
 import 'package:state_management/store/home_controller.dart';
 
