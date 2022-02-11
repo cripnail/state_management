@@ -39,7 +39,7 @@ class _CatalogPageState extends State<CatalogPage> {
               } else if (controller.appStatus == AppStatus.success) {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) => _CatalogListItem(),
+                    (context, index) => _CatalogListItem(Item(0, 'Code Smell')),
                     childCount: CatalogModel.itemNames.length,
                   ),
                 );
