@@ -30,7 +30,8 @@ class _CatalogPageState extends State<CatalogPage> {
         slivers: [
           _MyAppBar(),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
-          Observer(
+          Observer // отслеживаем статус загрузки каталога
+              (
             builder: (_) {
               if (controller.appStatus == AppStatus.loading) {
                 return const SliverFillRemaining(
@@ -39,8 +40,12 @@ class _CatalogPageState extends State<CatalogPage> {
               } else if (controller.appStatus == AppStatus.success) {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) => _CatalogListItem(Item(0, 'Code Smell')),
-                    childCount: CatalogModel.itemNames.length,
+                    (context, index) => _CatalogListItem(
+                        Item(0, 'Code Smell') // задаем элемент каталога
+                        ),
+                    childCount:
+                        controller.itemNames.length, // Задаем длину каталога
+                    // CatalogModel.itemNames.length,
                   ),
                 );
               } else if (controller.appStatus == AppStatus.empty) {
@@ -150,6 +155,8 @@ class _CatalogListItem extends StatelessWidget {
   const _CatalogListItem(this.item, {Key? key}) : super(key: key);
 
   final Item item;
+
+  // final controller = HomeController();
 
   @override
   Widget build(BuildContext context) {
