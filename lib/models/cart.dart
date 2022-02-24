@@ -1,43 +1,42 @@
-import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:state_management/models/catalog.dart';
+import 'item.dart';
 
 part 'cart.g.dart';
 
 class CartModel = _CartModelBase with _$CartModel;
 
 abstract class _CartModelBase with Store {
-  _CartModelBase(this.item);
+  _CartModelBase({this.items = const <Item>[]});
 
-  final Item item;
+  final List<Item> items;
 
-  /// The private field backing [catalog].
-  late CatalogModel _catalog;
-
-  /// Internal, private state of the cart. Stores the ids of each item.
-  final List<int> _itemIds = [];
-
-  /// The current catalog. Used to construct items from numeric ids.
-  CatalogModel get catalog => _catalog;
-
-  set catalog(CatalogModel newCatalog) {
-    _catalog = newCatalog;
-  }
-
-  @computed
-
-  /// List of items in the cart.
-  List<Item> get items => _itemIds.map((id) => _catalog.getById(id)).toList();
+  @observable
+  ObservableList<CartModel> obs = <CartModel>[].asObservable();
 
   @computed
 
   /// The current total price of all items.
   int get total => items.fold(0, (total, current) => total + current.price);
-//
-// @action
-//
-// /// Adds [item] to cart. This is the only way to modify the cart from outside.
-// void add(Item item) {
-//   _itemIds.add(item.id);
-// }
+
+  @action
+  void addItemToCart(Item item) {
+    obs.add(CartModel());
+  }
+
+  @action
+  void removeProduct(CartModel item) {
+    obs.remove(item);
+  }
+
+  @action
+  void updateCart() {
+    obs.length;
+  }
+
+  bool isInCart(Item item) {
+    if (obs.contains(CartModel())) {
+      return true;
+    }
+    return false;
+  }
 }

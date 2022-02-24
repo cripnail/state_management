@@ -24,12 +24,12 @@ class MyApp extends StatelessWidget {
         fontFamily: 'ProductSans',
         primaryColor: const Color.fromRGBO(243, 113, 95, 1),
       ),
-      initialRoute: '/',
+      // initialRoute: '/home',
       routes: {
-        '/': (context) => const CatalogPage(),
+        '/home': (context) => CatalogPage(),
         '/cart': (context) => const MyCart(),
       },
-      home: const CatalogPage(),
+      home: CatalogPage(),
     );
   }
 }

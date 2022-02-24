@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 import '../models/cart.dart';
-import '../models/catalog.dart';
+import '../models/item.dart';
 
 part 'cart_store.g.dart';
 
@@ -19,7 +19,7 @@ abstract class _ShoppingCartBase with Store {
 
   @action
   void addItemToCart(Item item) {
-    obs.add(CartModel(item));
+    obs.add(CartModel());
   }
 
   @action
@@ -33,7 +33,7 @@ abstract class _ShoppingCartBase with Store {
   }
 
   bool isInCart(Item item) {
-    if (obs.contains(CartModel(item))) {
+    if (obs.contains(CartModel())) {
       return true;
     }
     return false;

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:state_management/store/cart_store.dart';
+import 'package:state_management/stores/cart_store.dart';
+import '../common/extensions.dart';
+import '../stores/empty_state.dart';
+import '../stores/home_controller.dart';
 
 class MyCart extends StatelessWidget {
   const MyCart({Key? key}) : super(key: key);
@@ -31,53 +34,72 @@ class MyCart extends StatelessWidget {
   }
 }
 
-class _CartList extends StatefulWidget {
+class _CartList extends StatelessWidget {
   late final ShoppingCart shoppingCart;
 
   @override
-  State<_CartList> createState() => _CartListState();
-}
-
-class _CartListState extends State<_CartList> {
-  @override
   Widget build(BuildContext context) {
     var itemNameStyle = Theme.of(context).textTheme.headline6;
-    final cart = widget.shoppingCart.obs;
+    final cart = shoppingCart.obs;
 
     return Observer(builder: (_) {
-      return ListView.builder(
-        itemCount: cart.length,
-        itemBuilder: (context, index) => ListTile(
-          leading: const Icon(Icons.done),
-          trailing: IconButton(
-            icon: const Icon(Icons.remove_circle_outline),
-            onPressed: () {
-              final cartItem = cart[index];
-              cart.remove(cartItem);
-            },
+      final controller = HomeController();
+      if (controller.appStatus == AppStatus.loading) {
+        return const CircularProgressIndicator();
+      } else if (controller.appStatus == AppStatus.success) {
+        return ListView.builder(
+          itemCount: cart.length,
+          itemBuilder: (context, index) => ListTile(
+            leading: const Icon(Icons.done),
+            trailing: IconButton(
+              icon: const Icon(Icons.remove_circle_outline),
+              onPressed: () {
+                final cartItem = cart[index];
+                cart.remove(cartItem);
+              },
+            ),
+            title: Text(
+              cart.name,
+              style: itemNameStyle,
+            ),
           ),
-          title: Text(
-            cart.name,
-            style: itemNameStyle,
+        );
+      } else if (controller.appStatus == AppStatus.empty) {
+        return const EmptyState();
+      } else if (controller.appStatus == AppStatus.error) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "There was a problem!",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .apply(color: Colors.red),
+              ),
+              Text(
+                controller.errorMessage.isNotEmpty
+                    ? controller.errorMessage
+                    : controller.appStatus.message(),
+              ),
+            ],
           ),
-        ),
-      );
+        );
+      }
+      return const EmptyState();
     });
   }
 }
 
-class _CartTotal extends StatefulWidget {
+class _CartTotal extends StatelessWidget {
   late final ShoppingCart shoppingCart;
 
   @override
-  State<_CartTotal> createState() => _CartTotalState();
-}
-
-class _CartTotalState extends State<_CartTotal> {
-  @override
   Widget build(BuildContext context) {
     var hugeStyle =
-    Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48);
+        Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48);
 
     return SizedBox(
       height: 200,
@@ -85,10 +107,39 @@ class _CartTotalState extends State<_CartTotal> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Observer(
-                builder: (_) => Text(
-                    '\$${widget.shoppingCart.total.toStringAsFixed(2)}',
-                    style: hugeStyle)),
+            Observer(builder: (_) {
+              final controller = HomeController();
+              if (controller.appStatus == AppStatus.loading) {
+                return const CircularProgressIndicator();
+              } else if (controller.appStatus == AppStatus.success) {
+                return Text('\$${shoppingCart.total.toStringAsFixed(2)}',
+                    style: hugeStyle);
+              } else if (controller.appStatus == AppStatus.empty) {
+                return const EmptyState();
+              } else if (controller.appStatus == AppStatus.error) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "There was a problem!",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .apply(color: Colors.red),
+                      ),
+                      Text(
+                        controller.errorMessage.isNotEmpty
+                            ? controller.errorMessage
+                            : controller.appStatus.message(),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return const EmptyState();
+            }),
             const SizedBox(width: 24),
             TextButton(
               onPressed: () {

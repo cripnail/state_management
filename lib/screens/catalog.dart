@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:state_management/models/catalog.dart';
 import 'package:state_management/common/extensions.dart';
-import 'package:state_management/store/cart_store.dart';
-import 'package:state_management/store/empty_state.dart';
-import 'package:state_management/store/home_controller.dart';
+import 'package:state_management/stores/empty_state.dart';
+import '../models/item.dart';
+import '../stores/cart_store.dart';
+import '../stores/empty_state.dart';
+import '../stores/home_controller.dart';
 
 class CatalogPage extends StatefulWidget {
   const CatalogPage({Key? key}) : super(key: key);
@@ -33,6 +34,7 @@ class _CatalogPageState extends State<CatalogPage> {
           Observer // отслеживаем статус загрузки каталога
               (
             builder: (_) {
+              final controller = HomeController();
               if (controller.appStatus == AppStatus.loading) {
                 return const SliverFillRemaining(
                   child: Center(child: CircularProgressIndicator()),
@@ -40,12 +42,11 @@ class _CatalogPageState extends State<CatalogPage> {
               } else if (controller.appStatus == AppStatus.success) {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) => _CatalogListItem(
-                        Item(0, 'Code Smell') // задаем элемент каталога
+                    (context, index) => _CatalogListItem(controller.catalog
+                            .getByPosition(index) // задаем элемент каталога
                         ),
                     childCount:
-                        controller.itemNames.length, // Задаем длину каталога
-                    // CatalogModel.itemNames.length,
+                        controller.catalog.length, // Задаем длину каталога
                   ),
                 );
               } else if (controller.appStatus == AppStatus.empty) {
@@ -156,8 +157,6 @@ class _CatalogListItem extends StatelessWidget {
 
   final Item item;
 
-  // final controller = HomeController();
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme.headline6;
@@ -165,15 +164,47 @@ class _CatalogListItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: LimitedBox(
         maxHeight: 48,
-        child: Row(
-          children: [
-            AspectRatio(aspectRatio: 1, child: ColoredBox(color: item.color)),
-            const SizedBox(width: 24),
-            Expanded(child: Text(item.name, style: textTheme)),
-            const SizedBox(width: 24),
-            _AddButton(item: item),
-          ],
-        ),
+        child: Observer(builder: (_) {
+          final controller = HomeController();
+          if (controller.appStatus == AppStatus.loading) {
+            return const CircularProgressIndicator();
+          } else if (controller.appStatus == AppStatus.success) {
+            return Row(
+              children: [
+                AspectRatio(
+                    aspectRatio: 1, child: ColoredBox(color: item.color)),
+                const SizedBox(width: 24),
+                Expanded(child: Text(item.name, style: textTheme)),
+                const SizedBox(width: 24),
+                _AddButton(item: item),
+              ],
+            );
+          } else if (controller.appStatus == AppStatus.empty) {
+            return const EmptyState();
+          } else if (controller.appStatus == AppStatus.error) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "There was a problem!",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6!
+                        .apply(color: Colors.red),
+                  ),
+                  Text(
+                    controller.errorMessage.isNotEmpty
+                        ? controller.errorMessage
+                        : controller.appStatus.message(),
+                  ),
+                ],
+              ),
+            );
+          }
+          return const EmptyState();
+        }),
       ),
     );
   }
