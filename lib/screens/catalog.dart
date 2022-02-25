@@ -42,9 +42,9 @@ class _CatalogPageState extends State<CatalogPage> {
               } else if (controller.appStatus == AppStatus.success) {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) => _CatalogListItem(controller.catalog
-                            .getByPosition(index) // задаем элемент каталога
-                        ),
+                    (context, index) => _CatalogListItem(
+                      item: controller.catalog.getByPosition(index),
+                    ),
                     childCount:
                         controller.catalog.length, // Задаем длину каталога
                   ),
@@ -84,7 +84,6 @@ class _CatalogPageState extends State<CatalogPage> {
 
 class _AddButton extends StatelessWidget {
   const _AddButton({Key? key, required this.item}) : super(key: key);
-
   final Item item;
 
   @override
@@ -99,10 +98,14 @@ class _AddButton extends StatelessWidget {
           final cartController = ShoppingCart();
           return TextButton(
             style: TextButton.styleFrom(onSurface: theme.primaryColor),
-            onPressed: cartController.isInCart(item)
-                ? null
-                : () => cartController.addItemToCart(item),
-            child: cartController.isInCart(item)
+            onPressed: cartController.isInCart(
+                // item
+                controller.catalog) ? null : () => cartController.addItemToCart(
+                // item
+                controller.catalog),
+            child: cartController.isInCart(
+                    // item
+                    controller.catalog)
                 ? const Icon(Icons.check, semanticLabel: 'ADDED')
                 : const Text('ADD'),
           );
@@ -153,59 +156,37 @@ class _MyAppBar extends StatelessWidget {
 }
 
 class _CatalogListItem extends StatelessWidget {
-  const _CatalogListItem(this.item, {Key? key}) : super(key: key);
-
+  const _CatalogListItem({Key? key, required this.item}) : super(key: key);
   final Item item;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme.headline6;
+    final controller = HomeController();
+    final item = controller.catalog;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: LimitedBox(
-        maxHeight: 48,
-        child: Observer(builder: (_) {
-          final controller = HomeController();
-          if (controller.appStatus == AppStatus.loading) {
-            return const CircularProgressIndicator();
-          } else if (controller.appStatus == AppStatus.success) {
-            return Row(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: LimitedBox(
+            maxHeight: 48,
+            child: Row(
               children: [
                 AspectRatio(
-                    aspectRatio: 1, child: ColoredBox(color: item.color)),
+                    aspectRatio: 1,
+                    child: ColoredBox(
+                        color:
+                            // item
+                            controller.catalog.color)),
                 const SizedBox(width: 24),
-                Expanded(child: Text(item.name, style: textTheme)),
+                Expanded(
+                    child: Text(
+                        // item
+                        controller.catalog.name,
+                        style: textTheme)),
                 const SizedBox(width: 24),
-                _AddButton(item: item),
+                _AddButton(item: item
+                    // controller.catalog
+                    ),
               ],
-            );
-          } else if (controller.appStatus == AppStatus.empty) {
-            return const EmptyState();
-          } else if (controller.appStatus == AppStatus.error) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "There was a problem!",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6!
-                        .apply(color: Colors.red),
-                  ),
-                  Text(
-                    controller.errorMessage.isNotEmpty
-                        ? controller.errorMessage
-                        : controller.appStatus.message(),
-                  ),
-                ],
-              ),
-            );
-          }
-          return const EmptyState();
-        }),
-      ),
-    );
+            )));
   }
 }
