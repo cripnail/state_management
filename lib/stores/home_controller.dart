@@ -38,14 +38,15 @@ abstract class _HomeControllerBase with Store {
   Future<void> getProducts() async {
     try {
       appStatus = AppStatus.loading;
-      item = await Future.delayed(const Duration(seconds: 2))
-          .then((value) => _catalog as List<Item>
-              //     List.generate(
-              //   15,
-              //   (index)
-              //       => Item(),
-              // ),
-              );
+      item = await Future.delayed(const Duration(seconds: 2));
+      item = _catalog as List<Item>;
+          // .then((value) => _catalog as List<Item>
+          //     //     List.generate(
+          //     //   15,
+          //     //   (index)
+          //     //       => Item(),
+          //     // ),
+          //     )
       appStatus = item.isNotEmpty ? AppStatus.success : AppStatus.empty;
     } on PlatformException catch (e) {
       errorMessage = e.message.toString();
