@@ -52,24 +52,26 @@ class _CatalogPageState extends State<CatalogPage> {
               } else if (controller.appStatus == AppStatus.empty) {
                 return const EmptyState();
               } else if (controller.appStatus == AppStatus.error) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "There was a problem!",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6!
-                            .apply(color: Colors.red),
-                      ),
-                      Text(
-                        controller.errorMessage.isNotEmpty
-                            ? controller.errorMessage
-                            : controller.appStatus.message(),
-                      ),
-                    ],
+                return SliverFillRemaining(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "There was a problem!",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6!
+                              .apply(color: Colors.red),
+                        ),
+                        Text(
+                          controller.errorMessage.isNotEmpty
+                              ? controller.errorMessage
+                              : controller.appStatus.message(),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }

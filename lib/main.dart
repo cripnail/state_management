@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:state_management/models/cart.dart';
-import 'package:state_management/models/catalog.dart';
 import 'package:state_management/screens/cart.dart';
 import 'package:state_management/screens/catalog.dart';
-import 'common/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,10 +22,10 @@ class MyApp extends StatelessWidget {
       ),
       // initialRoute: '/home',
       routes: {
-        '/home': (context) => CatalogPage(),
+        '/home': (context) => const CatalogPage(),
         '/cart': (context) => const MyCart(),
       },
-      home: CatalogPage(),
+      home: const CatalogPage(),
     );
   }
 }

@@ -5,9 +5,6 @@ import '../models/item.dart';
 
 part 'home_controller.g.dart';
 
-//
-// const _delay = Duration(milliseconds: 800);
-
 const List<dynamic> _catalog = [
   'Code Smell',
   'Control Flow',
