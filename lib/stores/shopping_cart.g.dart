@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'cart_store.dart';
+part of 'shopping_cart.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -26,13 +26,13 @@ mixin _$ShoppingCart on _ShoppingCartBase, Store {
   final _$obsAtom = Atom(name: '_ShoppingCartBase.obs');
 
   @override
-  ObservableList<CartModel> get obs {
+  ObservableList<CartItem> get obs {
     _$obsAtom.reportRead();
     return super.obs;
   }
 
   @override
-  set obs(ObservableList<CartModel> value) {
+  set obs(ObservableList<CartItem> value) {
     _$obsAtom.reportWrite(value, super.obs, () {
       super.obs = value;
     });
@@ -42,33 +42,22 @@ mixin _$ShoppingCart on _ShoppingCartBase, Store {
       ActionController(name: '_ShoppingCartBase');
 
   @override
-  void addItemToCart(Item item) {
+  void add(Item item) {
     final _$actionInfo = _$_ShoppingCartBaseActionController.startAction(
-        name: '_ShoppingCartBase.addItemToCart');
+        name: '_ShoppingCartBase.add');
     try {
-      return super.addItemToCart(item);
+      return super.add(item);
     } finally {
       _$_ShoppingCartBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void removeProduct(CartModel item) {
+  void remove(Item item) {
     final _$actionInfo = _$_ShoppingCartBaseActionController.startAction(
-        name: '_ShoppingCartBase.removeProduct');
+        name: '_ShoppingCartBase.remove');
     try {
-      return super.removeProduct(item);
-    } finally {
-      _$_ShoppingCartBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void updateCart() {
-    final _$actionInfo = _$_ShoppingCartBaseActionController.startAction(
-        name: '_ShoppingCartBase.updateCart');
-    try {
-      return super.updateCart();
+      return super.remove(item);
     } finally {
       _$_ShoppingCartBaseActionController.endAction(_$actionInfo);
     }

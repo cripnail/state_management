@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:state_management/common/extensions.dart';
-import 'package:state_management/stores/empty_state.dart';
+import '../stores/shopping_cart.dart';
 import '../models/item.dart';
-import '../stores/cart_store.dart';
-import '../stores/empty_state.dart';
-import '../stores/home_controller.dart';
+import '../shared/services/rest_product_service.dart';
+import '../stores/home_store.dart';
 
 class CatalogPage extends StatefulWidget {
   const CatalogPage({Key? key}) : super(key: key);
@@ -15,127 +13,89 @@ class CatalogPage extends StatefulWidget {
 }
 
 class _CatalogPageState extends State<CatalogPage> {
-  final controller = HomeController();
-  final cartController = ShoppingCart();
+  late HomeStore _homeStore;
+  late ShoppingCart _counterStore;
 
   @override
   void initState() {
-    controller.getProducts();
+    _homeStore = HomeStore(RestProductService());
+    _homeStore.reload();
+    _counterStore = ShoppingCart();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          _MyAppBar(),
-          const SliverToBoxAdapter(child: SizedBox(height: 12)),
-          Observer // отслеживаем статус загрузки каталога
-              (
-            builder: (_) {
-              final controller = HomeController();
-              if (controller.appStatus == AppStatus.loading) {
-                return const SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              } else if (controller.appStatus == AppStatus.success) {
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => _CatalogListItem(
-                      item: controller.catalog.getByPosition(index),
-                    ),
-                    childCount:
-                        controller.catalog.length, // Задаем длину каталога
-                  ),
-                );
-              } else if (controller.appStatus == AppStatus.empty) {
-                return const EmptyState();
-              } else if (controller.appStatus == AppStatus.error) {
-                return SliverFillRemaining(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "There was a problem!",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .apply(color: Colors.red),
-                        ),
-                        Text(
-                          controller.errorMessage.isNotEmpty
-                              ? controller.errorMessage
-                              : controller.appStatus.message(),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }
-              return const EmptyState();
+        body: CustomScrollView(slivers: [
+      _MyAppBar(),
+      const SliverToBoxAdapter(child: SizedBox(height: 12)),
+      Observer // track the status of the catalog download
+          (builder: (_) {
+        final items = _homeStore.products.value;
+        if (_homeStore.hasError) {
+          return const SliverFillRemaining(
+            child: Center(
+              child: Text("An error has occurred"),
+            ),
+          );
+        } else if (_homeStore.loading) {
+          return const SliverFillRemaining(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else {
+          return RefreshIndicator(
+            onRefresh: () async {
+              _homeStore.reload();
             },
-          ),
-        ],
-      ),
-    );
+            child: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => _CatalogListItem(
+                  product: _counterStore.cat.getByPosition(index),
+                ),
+                childCount: _counterStore.cat.length, // Set catalog length
+              ),
+            ),
+          );
+        }
+      })
+    ]));
   }
 }
 
 class _AddButton extends StatelessWidget {
-  const _AddButton({Key? key, required this.item}) : super(key: key);
-  final Item item;
+  const _AddButton({Key? key, required this.product}) : super(key: key);
+  final Item product;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Observer(
       builder: (_) {
-        final controller = HomeController();
-        if (controller.appStatus == AppStatus.loading) {
-          return const CircularProgressIndicator();
-        } else if (controller.appStatus == AppStatus.success) {
-          final cartController = ShoppingCart();
+        final _homeStore = HomeStore(RestProductService());
+        final _counterStore = ShoppingCart();
+        if (_homeStore.hasError) {
+          return const Center(
+            child: Text("An error has occurred"),
+          );
+        } else if (_homeStore.loading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
           return TextButton(
             style: TextButton.styleFrom(onSurface: theme.primaryColor),
-            onPressed: cartController.isInCart(
-                // item
-                controller.catalog) ? null : () => cartController.addItemToCart(
-                // item
-                controller.catalog),
-            child: cartController.isInCart(
-                    // item
-                    controller.catalog)
+            onPressed: _counterStore.isInCart(_counterStore.cat)
+                ? null
+                : () => _counterStore.add(_counterStore.cat),
+            child: _counterStore.isInCart(_counterStore.cat)
                 ? const Icon(Icons.check, semanticLabel: 'ADDED')
                 : const Text('ADD'),
           );
-        } else if (controller.appStatus == AppStatus.empty) {
-          return const EmptyState();
-        } else if (controller.appStatus == AppStatus.error) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "There was a problem!",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6!
-                      .apply(color: Colors.red),
-                ),
-                Text(
-                  controller.errorMessage.isNotEmpty
-                      ? controller.errorMessage
-                      : controller.appStatus.message(),
-                ),
-              ],
-            ),
-          );
         }
-        return const EmptyState();
       },
     );
   }
@@ -158,14 +118,13 @@ class _MyAppBar extends StatelessWidget {
 }
 
 class _CatalogListItem extends StatelessWidget {
-  const _CatalogListItem({Key? key, required this.item}) : super(key: key);
-  final Item item;
+  const _CatalogListItem({Key? key, required this.product}) : super(key: key);
+  final Item product;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme.headline6;
-    final controller = HomeController();
-    final item = controller.catalog;
+    final _counterStore = ShoppingCart();
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: LimitedBox(
@@ -174,20 +133,11 @@ class _CatalogListItem extends StatelessWidget {
               children: [
                 AspectRatio(
                     aspectRatio: 1,
-                    child: ColoredBox(
-                        color:
-                            // item
-                            controller.catalog.color)),
+                    child: ColoredBox(color: _counterStore.cat.color)),
                 const SizedBox(width: 24),
-                Expanded(
-                    child: Text(
-                        // item
-                        controller.catalog.name,
-                        style: textTheme)),
+                Expanded(child: Text(_counterStore.cat.name, style: textTheme)),
                 const SizedBox(width: 24),
-                _AddButton(item: item
-                    // controller.catalog
-                    ),
+                _AddButton(product: _counterStore.cat),
               ],
             )));
   }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:state_management/stores/cart_store.dart';
-import '../common/extensions.dart';
-import '../stores/empty_state.dart';
-import '../stores/home_controller.dart';
+import '../shared/services/rest_product_service.dart';
+import '../stores/home_store.dart';
+import '../stores/shopping_cart.dart';
 
 class MyCart extends StatelessWidget {
   const MyCart({Key? key}) : super(key: key);
@@ -43,10 +42,16 @@ class _CartList extends StatelessWidget {
     final cart = shoppingCart.obs;
 
     return Observer(builder: (_) {
-      final controller = HomeController();
-      if (controller.appStatus == AppStatus.loading) {
-        return const CircularProgressIndicator();
-      } else if (controller.appStatus == AppStatus.success) {
+      final _homeStore = HomeStore(RestProductService());
+      if (_homeStore.hasError) {
+        return const Center(
+          child: Text("An error has occurred"),
+        );
+      } else if (_homeStore.loading) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      } else {
         return ListView.builder(
           itemCount: cart.length,
           itemBuilder: (context, index) => ListTile(
@@ -64,31 +69,7 @@ class _CartList extends StatelessWidget {
             ),
           ),
         );
-      } else if (controller.appStatus == AppStatus.empty) {
-        return const EmptyState();
-      } else if (controller.appStatus == AppStatus.error) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "There was a problem!",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .apply(color: Colors.red),
-              ),
-              Text(
-                controller.errorMessage.isNotEmpty
-                    ? controller.errorMessage
-                    : controller.appStatus.message(),
-              ),
-            ],
-          ),
-        );
       }
-      return const EmptyState();
     });
   }
 }
@@ -108,37 +89,19 @@ class _CartTotal extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Observer(builder: (_) {
-              final controller = HomeController();
-              if (controller.appStatus == AppStatus.loading) {
-                return const CircularProgressIndicator();
-              } else if (controller.appStatus == AppStatus.success) {
+              final _homeStore = HomeStore(RestProductService());
+              if (_homeStore.hasError) {
+                return const Center(
+                  child: Text("An error has occurred"),
+                );
+              } else if (_homeStore.loading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
                 return Text('\$${shoppingCart.total.toStringAsFixed(2)}',
                     style: hugeStyle);
-              } else if (controller.appStatus == AppStatus.empty) {
-                return const EmptyState();
-              } else if (controller.appStatus == AppStatus.error) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "There was a problem!",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6!
-                            .apply(color: Colors.red),
-                      ),
-                      Text(
-                        controller.errorMessage.isNotEmpty
-                            ? controller.errorMessage
-                            : controller.appStatus.message(),
-                      ),
-                    ],
-                  ),
-                );
               }
-              return const EmptyState();
             }),
             const SizedBox(width: 24),
             TextButton(
