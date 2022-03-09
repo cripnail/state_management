@@ -33,7 +33,6 @@ class _CatalogPageState extends State<CatalogPage> {
       const SliverToBoxAdapter(child: SizedBox(height: 12)),
       Observer // track the status of the catalog download
           (builder: (_) {
-        final items = _homeStore.products.value;
         if (_homeStore.hasError) {
           return const SliverFillRemaining(
             child: Center(
@@ -73,6 +72,7 @@ class _AddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Observer(
       builder: (_) {
         final _homeStore = HomeStore(RestProductService());
