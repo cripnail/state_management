@@ -1,30 +1,15 @@
 import 'package:state_management/shared/services/product_service.dart';
 import '../../models/item.dart';
-
-const List<dynamic> _catalog = [
-  'Code Smell',
-  'Control Flow',
-  'Interpreter',
-  'Recursion',
-  'Sprint',
-  'Heisenbug',
-  'Spaghetti',
-  'Hydra Code',
-  'Off-By-One',
-  'Scope',
-  'Callback',
-  'Closure',
-  'Automata',
-  'Bit Shift',
-  'Currying',
-];
+import '../../stores/shopping_cart.dart';
 
 class RestProductService implements ProductService {
+  final ShoppingCart _counterStore = ShoppingCart();
+
   @override
   Future<List<Item>> findAll() {
     try {
       return Future.delayed(
-          const Duration(seconds: 2), () => _catalog as List<Item>);
+          const Duration(seconds: 2), () => _counterStore.cat);
       //     List<Product>.generate(
       //         10,
       //         (index) =>

@@ -1,25 +1,9 @@
 import 'package:mobx/mobx.dart';
+import '../common/constants.dart';
 import '../models/cart_item.dart';
 import '../models/item.dart';
-part 'shopping_cart.g.dart';
 
-const List<dynamic> _catalog = [
-  'Code Smell',
-  'Control Flow',
-  'Interpreter',
-  'Recursion',
-  'Sprint',
-  'Heisenbug',
-  'Spaghetti',
-  'Hydra Code',
-  'Off-By-One',
-  'Scope',
-  'Callback',
-  'Closure',
-  'Automata',
-  'Bit Shift',
-  'Currying',
-];
+part 'shopping_cart.g.dart';
 
 class ShoppingCart = _ShoppingCartBase with _$ShoppingCart;
 
@@ -50,5 +34,6 @@ abstract class _ShoppingCartBase with Store {
     }
     return false;
   }
-  get cat => _catalog;
+
+  get cat => catalog as List<Item>;
 }
