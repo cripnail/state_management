@@ -10,11 +10,6 @@ class RestProductService implements ProductService {
     try {
       return Future.delayed(
           const Duration(seconds: 2), () => _counterStore.cat);
-      //     List<Product>.generate(
-      //         10,
-      //         (index) =>
-      //             Product("$index", "product $index", (index * 35.951 / 2.5)))
-      // );
     } catch (e) {
       rethrow;
     }

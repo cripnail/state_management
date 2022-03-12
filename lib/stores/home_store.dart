@@ -11,8 +11,7 @@ abstract class _HomeStoreBase with Store {
   final ProductService _productService;
 
   @observable
-  ObservableFuture<List<Item>?> products =
-      ObservableFuture.value(catalog as List<Item>);
+  ObservableFuture<List<Item>?> products = ObservableFuture.value(catalog);
 
   @computed
   bool get loading => products.status == FutureStatus.pending;

@@ -35,5 +35,5 @@ abstract class _ShoppingCartBase with Store {
     return false;
   }
 
-  get cat => catalog as List<Item>;
+  get cat => catalog;
 }
