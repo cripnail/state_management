@@ -19,7 +19,7 @@ class _CatalogPageState extends State<CatalogPage> {
   @override
   void initState() {
     _homeStore = HomeStore(RestProductService());
-    _homeStore.reload();
+    // _homeStore.reload();
     _counterStore = ShoppingCart();
 
     super.initState();
@@ -46,17 +46,12 @@ class _CatalogPageState extends State<CatalogPage> {
             ),
           );
         } else {
-          return RefreshIndicator(
-            onRefresh: () async {
-              _homeStore.reload();
-            },
-            child: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => _CatalogListItem(
-                  product: _counterStore.cat.getByPosition(index),
-                ),
-                childCount: _counterStore.cat.length, // Set catalog length
+          return SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => _CatalogListItem(
+                product: _counterStore.cat.getByPosition(index),
               ),
+              childCount: _counterStore.cat.length, // Set catalog length
             ),
           );
         }
