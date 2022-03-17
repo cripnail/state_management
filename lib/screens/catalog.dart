@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import '../common/constants.dart';
 import '../stores/shopping_cart.dart';
 import '../models/item.dart';
 import '../shared/services/rest_product_service.dart';
@@ -19,7 +20,6 @@ class _CatalogPageState extends State<CatalogPage> {
   @override
   void initState() {
     _homeStore = HomeStore(RestProductService());
-    // _homeStore.reload();
     _counterStore = ShoppingCart();
 
     super.initState();
@@ -49,9 +49,9 @@ class _CatalogPageState extends State<CatalogPage> {
           return SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) => _CatalogListItem(
-                product: _counterStore.cat.getByPosition(index),
+                product: _homeStore.catalog.getByPosition(index),
               ),
-              childCount: _counterStore.cat.length, // Set catalog length
+              childCount: ctl.length, // Set catalog length
             ),
           );
         }
@@ -132,7 +132,7 @@ class _CatalogListItem extends StatelessWidget {
                 const SizedBox(width: 24),
                 Expanded(child: Text(_counterStore.cat.name, style: textTheme)),
                 const SizedBox(width: 24),
-                _AddButton(product: _counterStore.cat),
+                _AddButton(product: product),
               ],
             )));
   }

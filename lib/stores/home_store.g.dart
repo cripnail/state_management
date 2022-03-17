@@ -25,13 +25,13 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   final _$productsAtom = Atom(name: '_HomeStoreBase.products');
 
   @override
-  ObservableFuture<List<Item>?> get products {
+  ObservableFuture<CatalogModel> get products {
     _$productsAtom.reportRead();
     return super.products;
   }
 
   @override
-  set products(ObservableFuture<List<Item>?> value) {
+  set products(ObservableFuture<CatalogModel> value) {
     _$productsAtom.reportWrite(value, super.products, () {
       super.products = value;
     });
