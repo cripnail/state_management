@@ -51,7 +51,8 @@ class _CatalogPageState extends State<CatalogPage> {
               (context, index) => _CatalogListItem(
                 product: _homeStore.catalog.getByPosition(index),
               ),
-              childCount: ctl.length, // Set catalog length
+              childCount:
+                  _homeStore.catalog.itemNames.length, // Set catalog length
             ),
           );
         }

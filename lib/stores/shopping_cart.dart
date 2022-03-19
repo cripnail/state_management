@@ -34,6 +34,6 @@ abstract class _ShoppingCartBase with Store {
     }
     return false;
   }
-  //
   get cat => ctl;
+  get itemCat => itemList;
 }
