@@ -10,7 +10,7 @@ class HomeStore = _HomeStoreBase with _$HomeStore;
 
 abstract class _HomeStoreBase with Store {
   final ProductService _productService;
-  final CatalogModel catalog = CatalogModel(itemNames: [ctl]);
+  final CatalogModel catalog = CatalogModel(itemNames: ctl);
 
   @observable
   ObservableFuture

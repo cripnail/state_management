@@ -1,3 +1,5 @@
+import 'package:state_management/models/catalog.dart';
+
 import '../models/item.dart';
 
 List _itemList = <Item>[
@@ -21,22 +23,55 @@ List _itemList = <Item>[
 
 get itemList => _itemList;
 
-
-const _ctl = [
-  'Code Smell',
-  'Control Flow',
-  'Interpreter',
-  'Recursion',
-  'Sprint',
-  'Heisenbug',
-  'Spaghetti',
-  'Hydra Code',
-  'Off-By-One',
-  'Scope',
-  'Callback',
-  'Closure',
-  'Automata',
-  'Bit Shift',
-  'Currying',
+List<CatalogModel> _ctl = [
+  CatalogModel(itemNames: [
+    'Code Smell',
+  ]),
+  CatalogModel(itemNames: [
+    'Control Flow',
+  ]),
+  CatalogModel(itemNames: [
+    'Interpreter',
+  ]),
+  CatalogModel(itemNames: [
+    'Recursion',
+  ]),
+  CatalogModel(itemNames: [
+    'Sprint',
+  ]),
+  CatalogModel(itemNames: [
+    'Sprint',
+  ]),
+  CatalogModel(itemNames: [
+    'Heisenbug',
+  ]),
+  CatalogModel(itemNames: [
+    'Spaghetti',
+  ]),
+  CatalogModel(itemNames: [
+    'Hydra Code',
+  ]),
+  CatalogModel(itemNames: [
+    'Off-By-One',
+  ]),
+  CatalogModel(itemNames: [
+    'Scope',
+  ]),
+  CatalogModel(itemNames: [
+    'Callback',
+  ]),
+  CatalogModel(itemNames: [
+    'Closure',
+  ]),
+  CatalogModel(itemNames: [
+    'Automata',
+  ]),
+  CatalogModel(itemNames: [
+    'Bit Shift',
+  ]),
+  CatalogModel(itemNames: [
+    'Currying',
+  ]),
 ];
- get ctl => _ctl;
+
+get ctl => _ctl;
