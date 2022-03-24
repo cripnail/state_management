@@ -1,7 +1,6 @@
 import 'package:mobx/mobx.dart';
 import '../common/constants.dart';
 import '../models/catalog.dart';
-import '../models/item.dart';
 import '../shared/services/product_service.dart';
 
 part 'home_store.g.dart';
@@ -13,9 +12,9 @@ abstract class _HomeStoreBase with Store {
   final CatalogModel catalog = CatalogModel(itemNames: ctl);
 
   @observable
-  ObservableFuture
-      // <List<Item>?>
-      <CatalogModel> products = ObservableFuture.value(ctl);
+  ObservableFuture<CatalogModel> products = ObservableFuture.value(
+    CatalogModel(itemNames: ctl),
+  );
 
   @computed
   bool get loading => products.status == FutureStatus.pending;
@@ -27,6 +26,7 @@ abstract class _HomeStoreBase with Store {
 
   @action
   void reload() {
-    products = _productService.findAll().asObservable() as ObservableFuture<CatalogModel>;
+    products = _productService.findAll().asObservable()
+        as ObservableFuture<CatalogModel>;
   }
 }
