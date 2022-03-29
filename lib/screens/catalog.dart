@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import '../common/constants.dart';
 import '../stores/shopping_cart.dart';
 import '../models/item.dart';
 import '../shared/services/rest_product_service.dart';
@@ -62,7 +61,10 @@ class _CatalogPageState extends State<CatalogPage> {
 }
 
 class _AddButton extends StatelessWidget {
-  const _AddButton({Key? key, required this.product}) : super(key: key);
+  const _AddButton({
+    required this.product,
+    Key? key,
+  }) : super(key: key);
   final Item product;
 
   @override
@@ -73,6 +75,7 @@ class _AddButton extends StatelessWidget {
       builder: (_) {
         final _homeStore = HomeStore(RestProductService());
         final _counterStore = ShoppingCart();
+        final items = _homeStore.products.value;
         if (_homeStore.hasError) {
           return const Center(
             child: Text("An error has occurred"),
@@ -82,6 +85,7 @@ class _AddButton extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else {
+          // final isInCart = cart.items.contains(item);
           return TextButton(
             style: TextButton.styleFrom(onSurface: theme.primaryColor),
             onPressed: _counterStore.isInCart(_counterStore.cat)
@@ -114,13 +118,17 @@ class _MyAppBar extends StatelessWidget {
 }
 
 class _CatalogListItem extends StatelessWidget {
-  const _CatalogListItem({Key? key, required this.product}) : super(key: key);
+  const _CatalogListItem({
+    required this.product,
+    Key? key,
+  }) : super(key: key);
   final Item product;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme.headline6;
     final _counterStore = ShoppingCart();
+    final _homeStore = HomeStore(RestProductService());
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: LimitedBox(
@@ -129,9 +137,11 @@ class _CatalogListItem extends StatelessWidget {
               children: [
                 AspectRatio(
                     aspectRatio: 1,
-                    child: ColoredBox(color: _counterStore.cat.color)),
+                    child: ColoredBox(color: _counterStore.productItem.color)),
                 const SizedBox(width: 24),
-                Expanded(child: Text(_counterStore.cat.name, style: textTheme)),
+                Expanded(
+                    child:
+                        Text(_counterStore.productItem.name, style: textTheme)),
                 const SizedBox(width: 24),
                 _AddButton(product: product),
               ],
