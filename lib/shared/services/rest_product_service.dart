@@ -8,7 +8,7 @@ class RestProductService implements ProductService {
   @override
   Future<List<Item>> findAll() {
     try {
-      return Future.delayed(const Duration(seconds: 2), () => ctl);
+      return Future.delayed(const Duration(seconds: 2), () => itemList);
     } catch (e) {
       rethrow;
     }

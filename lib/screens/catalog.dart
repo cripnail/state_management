@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import '../common/constants.dart';
 import '../stores/shopping_cart.dart';
 import '../models/item.dart';
 import '../shared/services/rest_product_service.dart';
@@ -67,6 +68,8 @@ class _AddButton extends StatelessWidget {
   }) : super(key: key);
   final Item product;
 
+  Item get elementItem => itemList[i];
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -76,6 +79,7 @@ class _AddButton extends StatelessWidget {
         final _homeStore = HomeStore(RestProductService());
         final _counterStore = ShoppingCart();
         final items = _homeStore.products.value;
+
         if (_homeStore.hasError) {
           return const Center(
             child: Text("An error has occurred"),
@@ -88,10 +92,10 @@ class _AddButton extends StatelessWidget {
           // final isInCart = cart.items.contains(item);
           return TextButton(
             style: TextButton.styleFrom(onSurface: theme.primaryColor),
-            onPressed: _counterStore.isInCart(_counterStore.cat)
+            onPressed: _counterStore.isInCart(elementItem)
                 ? null
-                : () => _counterStore.add(_counterStore.cat),
-            child: _counterStore.isInCart(_counterStore.cat)
+                : () => _counterStore.add(elementItem),
+            child: _counterStore.isInCart(elementItem)
                 ? const Icon(Icons.check, semanticLabel: 'ADDED')
                 : const Text('ADD'),
           );
@@ -127,8 +131,6 @@ class _CatalogListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme.headline6;
-    final _counterStore = ShoppingCart();
-    final _homeStore = HomeStore(RestProductService());
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: LimitedBox(
@@ -136,12 +138,9 @@ class _CatalogListItem extends StatelessWidget {
             child: Row(
               children: [
                 AspectRatio(
-                    aspectRatio: 1,
-                    child: ColoredBox(color: _counterStore.productItem.color)),
+                    aspectRatio: 1, child: ColoredBox(color: product.color)),
                 const SizedBox(width: 24),
-                Expanded(
-                    child:
-                        Text(_counterStore.productItem.name, style: textTheme)),
+                Expanded(child: Text(product.name, style: textTheme)),
                 const SizedBox(width: 24),
                 _AddButton(product: product),
               ],

@@ -36,5 +36,5 @@ abstract class _ShoppingCartBase with Store {
     }
     return false;
   }
-  List<Item> cat() =>  itemList;
+  List<Item> listItem() =>  itemList;
 }

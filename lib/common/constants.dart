@@ -1,7 +1,7 @@
 import '../models/catalog.dart';
 import '../models/item.dart';
 
-List<String> _ctl = [
+List<String> _ctl = <String>[
   'Code Smell',
   'Control Flow',
   'Interpreter',
@@ -21,7 +21,7 @@ List<String> _ctl = [
 
 List<String> get ctl => _ctl;
 
-List<Item> _itemList = [
+List<Item> _itemList = <Item>[
   Item(1, 'Code Smell'),
   Item(2, 'Control Flow'),
   Item(3, 'Interpreter'),
