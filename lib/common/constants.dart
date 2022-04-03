@@ -40,3 +40,5 @@ List<Item> _itemList = <Item>[
 ];
 
 List<Item> get itemList => _itemList;
+
+final elem = _itemList.forEach((e) => e);
