@@ -34,18 +34,18 @@ class MyCart extends StatelessWidget {
 }
 
 class _CartList extends StatelessWidget {
-  late final ShoppingCart shoppingCart;
+  final ShoppingCart shoppingCart = ShoppingCart();
 
   @override
   Widget build(BuildContext context) {
-    var itemNameStyle = Theme.of(context).textTheme.headline6;
+    final itemNameStyle = Theme.of(context).textTheme.headline6;
     final cart = shoppingCart.obs;
 
     return Observer(builder: (_) {
       final _homeStore = HomeStore(RestProductService());
       if (_homeStore.hasError) {
         return const Center(
-          child: Text("An error has occurred"),
+          child: Text('An error has occurred'),
         );
       } else if (_homeStore.loading) {
         return const Center(
@@ -75,11 +75,11 @@ class _CartList extends StatelessWidget {
 }
 
 class _CartTotal extends StatelessWidget {
-  late final ShoppingCart shoppingCart;
+  final ShoppingCart shoppingCart = ShoppingCart();
 
   @override
   Widget build(BuildContext context) {
-    var hugeStyle =
+    final hugeStyle =
         Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48);
 
     return SizedBox(
@@ -92,7 +92,7 @@ class _CartTotal extends StatelessWidget {
               final _homeStore = HomeStore(RestProductService());
               if (_homeStore.hasError) {
                 return const Center(
-                  child: Text("An error has occurred"),
+                  child: Text('An error has occurred'),
                 );
               } else if (_homeStore.loading) {
                 return const Center(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import '../common/constants.dart';
 import '../stores/shopping_cart.dart';
 import '../models/item.dart';
 import '../shared/services/rest_product_service.dart';
@@ -15,12 +14,10 @@ class CatalogPage extends StatefulWidget {
 
 class _CatalogPageState extends State<CatalogPage> {
   late HomeStore _homeStore;
-  late ShoppingCart _counterStore;
 
   @override
   void initState() {
     _homeStore = HomeStore(RestProductService());
-    _counterStore = ShoppingCart();
 
     super.initState();
   }
@@ -36,7 +33,7 @@ class _CatalogPageState extends State<CatalogPage> {
         if (_homeStore.hasError) {
           return const SliverFillRemaining(
             child: Center(
-              child: Text("An error has occurred"),
+              child: Text('An error has occurred'),
             ),
           );
         } else if (_homeStore.loading) {
@@ -68,8 +65,6 @@ class _AddButton extends StatelessWidget {
   }) : super(key: key);
   final Item product;
 
-  Item get elementItem => itemList[i];
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -78,11 +73,10 @@ class _AddButton extends StatelessWidget {
       builder: (_) {
         final _homeStore = HomeStore(RestProductService());
         final _counterStore = ShoppingCart();
-        final items = _homeStore.products.value;
 
         if (_homeStore.hasError) {
           return const Center(
-            child: Text("An error has occurred"),
+            child: Text('An error has occurred'),
           );
         } else if (_homeStore.loading) {
           return const Center(
@@ -92,10 +86,10 @@ class _AddButton extends StatelessWidget {
           // final isInCart = cart.items.contains(item);
           return TextButton(
             style: TextButton.styleFrom(onSurface: theme.primaryColor),
-            onPressed: _counterStore.isInCart(elementItem)
+            onPressed: _counterStore.isInCart(product)
                 ? null
-                : () => _counterStore.add(elementItem),
-            child: _counterStore.isInCart(elementItem)
+                : () => _counterStore.add(product),
+            child: _counterStore.isInCart(product)
                 ? const Icon(Icons.check, semanticLabel: 'ADDED')
                 : const Text('ADD'),
           );
