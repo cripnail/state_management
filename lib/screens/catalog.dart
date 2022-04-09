@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import '../stores/shopping_cart.dart';
 import '../models/item.dart';
 import '../shared/services/rest_product_service.dart';
 import '../stores/home_store.dart';
+import '../stores/shopping_cart.dart';
 
 class CatalogPage extends StatefulWidget {
   const CatalogPage({Key? key}) : super(key: key);
@@ -59,11 +59,13 @@ class _CatalogPageState extends State<CatalogPage> {
 }
 
 class _AddButton extends StatelessWidget {
-  const _AddButton({
+  _AddButton({
     required this.product,
     Key? key,
   }) : super(key: key);
   final Item product;
+  final _homeStore = HomeStore(RestProductService());
+  final _counterStore = ShoppingCart();
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +73,6 @@ class _AddButton extends StatelessWidget {
 
     return Observer(
       builder: (_) {
-        final _homeStore = HomeStore(RestProductService());
-        final _counterStore = ShoppingCart();
-
         if (_homeStore.hasError) {
           return const Center(
             child: Text('An error has occurred'),

@@ -1,5 +1,4 @@
 // ignore: always_use_package_imports
-import '../models/catalog.dart';
 import '../models/item.dart';
 
 List<String> _ctl = <String>[
