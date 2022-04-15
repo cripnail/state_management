@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 import '../models/item.dart';
 import '../shared/services/rest_product_service.dart';
 import '../stores/home_store.dart';
@@ -64,13 +65,13 @@ class _AddButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
   final Item product;
-  final _homeStore = HomeStore(RestProductService());
+  // final _homeStore = HomeStore(RestProductService());
   final _counterStore = ShoppingCart();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    final _homeStore = Provider.of<HomeStore>(context);
     return Observer(
       builder: (_) {
         if (_homeStore.hasError) {
@@ -82,7 +83,6 @@ class _AddButton extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else {
-          // final isInCart = cart.items.contains(item);
           return TextButton(
             style: TextButton.styleFrom(onSurface: theme.primaryColor),
             onPressed: _counterStore.isInCart(product)

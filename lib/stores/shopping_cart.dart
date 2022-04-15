@@ -8,8 +8,6 @@ part 'shopping_cart.g.dart';
 class ShoppingCart = _ShoppingCartBase with _$ShoppingCart;
 
 abstract class _ShoppingCartBase with Store {
-  // final CartItem cartItem = CartItem();
-
   @observable
   ObservableList<CartItem> obs = <CartItem>[].asObservable();
 
@@ -21,8 +19,8 @@ abstract class _ShoppingCartBase with Store {
       obs.fold(0, (previousValue, element) => previousValue + element.total);
 
   @action
-  void add(Item item) {
-    obs.add(CartItem(item));
+  void add(Item product) {
+    obs.add(CartItem(product));
   }
 
   @action
@@ -36,5 +34,6 @@ abstract class _ShoppingCartBase with Store {
     }
     return false;
   }
-  List<Item> listItem() =>  itemList;
+
+  List<Item> listItem() => itemList;
 }
