@@ -64,7 +64,7 @@ class _CartList extends StatelessWidget {
               },
             ),
             title: Text(
-              cart.name,
+              cart[index].product.name,
               style: itemNameStyle,
             ),
           ),
