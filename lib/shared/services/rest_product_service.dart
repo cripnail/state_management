@@ -1,6 +1,6 @@
+import 'package:state_management/common/constants.dart';
+import 'package:state_management/models/item.dart';
 import 'package:state_management/shared/services/product_service.dart';
-import '../../common/constants.dart';
-import '../../models/item.dart';
 
 class RestProductService implements ProductService {
   // final ShoppingCart _counterStore = ShoppingCart();

@@ -12,10 +12,4 @@ abstract class _CartItemBase with Store {
 
   @computed
   num get total => product.price;
-
-  @override
-  int get hashCode => product.hashCode;
-
-  @override
-  bool operator ==(other) => other is CartItem && other.product == product;
 }
