@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import '../shared/services/rest_product_service.dart';
-import '../stores/home_store.dart';
-import '../stores/shopping_cart.dart';
+import 'package:provider/provider.dart';
+import 'package:state_management/stores/home_store.dart';
+import 'package:state_management/stores/shopping_cart.dart';
 
 class MyCart extends StatelessWidget {
   const MyCart({Key? key}) : super(key: key);
@@ -34,15 +34,14 @@ class MyCart extends StatelessWidget {
 }
 
 class _CartList extends StatelessWidget {
-  final ShoppingCart shoppingCart = ShoppingCart();
-
   @override
   Widget build(BuildContext context) {
     final itemNameStyle = Theme.of(context).textTheme.headline6;
+    final shoppingCart = Provider.of<ShoppingCart>(context);
+    final _homeStore = Provider.of<HomeStore>(context);
     final cart = shoppingCart.obs;
 
     return Observer(builder: (_) {
-      final _homeStore = HomeStore(RestProductService());
       if (_homeStore.hasError) {
         return const Center(
           child: Text('An error has occurred'),
@@ -75,12 +74,12 @@ class _CartList extends StatelessWidget {
 }
 
 class _CartTotal extends StatelessWidget {
-  final ShoppingCart shoppingCart = ShoppingCart();
-
   @override
   Widget build(BuildContext context) {
     final hugeStyle =
         Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48);
+    final _cartStore = Provider.of<ShoppingCart>(context);
+    final _homeStore = Provider.of<HomeStore>(context);
 
     return SizedBox(
       height: 200,
@@ -89,7 +88,7 @@ class _CartTotal extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Observer(builder: (_) {
-              final _homeStore = HomeStore(RestProductService());
+              // final _homeStore = HomeStore(RestProductService());
               if (_homeStore.hasError) {
                 return const Center(
                   child: Text('An error has occurred'),
@@ -99,7 +98,7 @@ class _CartTotal extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return Text('\$${shoppingCart.total.toStringAsFixed(2)}',
+                return Text('\$${_cartStore.total.toStringAsFixed(2)}',
                     style: hugeStyle);
               }
             }),

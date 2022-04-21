@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+@immutable
 class Item {
   Item(this.id, this.name)
       : color = Colors.primaries[id % Colors.primaries.length];

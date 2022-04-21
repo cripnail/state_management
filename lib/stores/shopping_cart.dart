@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
-import '../common/constants.dart';
-import '../models/cart_item.dart';
-import '../models/item.dart';
+import 'package:state_management/common/constants.dart';
+import 'package:state_management/models/cart_item.dart';
+import 'package:state_management/models/item.dart';
 
 part 'shopping_cart.g.dart';
 

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import '../models/item.dart';
-import '../shared/services/rest_product_service.dart';
-import '../stores/home_store.dart';
-import '../stores/shopping_cart.dart';
+
+import 'package:state_management/models/item.dart';
+import 'package:state_management/shared/services/rest_product_service.dart';
+import 'package:state_management/stores/home_store.dart';
+import 'package:state_management/stores/shopping_cart.dart';
 
 class CatalogPage extends StatefulWidget {
   const CatalogPage({Key? key}) : super(key: key);
@@ -60,18 +61,18 @@ class _CatalogPageState extends State<CatalogPage> {
 }
 
 class _AddButton extends StatelessWidget {
-  _AddButton({
+  const _AddButton({
     required this.product,
     Key? key,
   }) : super(key: key);
   final Item product;
-  // final _homeStore = HomeStore(RestProductService());
-  final _counterStore = ShoppingCart();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final _counterStore = Provider.of<ShoppingCart>(context);
     final _homeStore = Provider.of<HomeStore>(context);
+
     return Observer(
       builder: (_) {
         if (_homeStore.hasError) {

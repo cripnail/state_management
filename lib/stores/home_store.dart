@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
-import '../common/constants.dart';
-import '../models/catalog.dart';
-import '../shared/services/product_service.dart';
+import 'package:state_management/common/constants.dart';
+import 'package:state_management/models/catalog.dart';
+import 'package:state_management/shared/services/product_service.dart';
 
 part 'home_store.g.dart';
 
