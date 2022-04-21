@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'item.dart';
+import 'package:state_management/models/item.dart';
 
 part 'catalog.g.dart';
 

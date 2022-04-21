@@ -1,5 +1,5 @@
-import '../../models/item.dart';
+import 'package:state_management/models/item.dart';
 
-abstract class ProductService{
+abstract class ProductService {
   Future<List<Item>> findAll();
 }
