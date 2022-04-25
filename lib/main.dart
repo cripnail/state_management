@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:state_management/redux/reducers.dart';
 import 'package:state_management/screens/catalog.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
@@ -19,14 +20,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Shopping Cart',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'ProductSans',
-        primaryColor: const Color.fromRGBO(243, 113, 95, 1),
+    return StoreProvider(
+      store: store,
+      child: MaterialApp(
+        title: 'Shopping Cart',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'ProductSans',
+          primaryColor: const Color.fromRGBO(243, 113, 95, 1),
+        ),
+        home: const MyCatalog(),
       ),
-      home: const MyCatalog(),
     );
   }
 }
