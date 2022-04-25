@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
-import 'package:state_management/models/cart.dart';
-import 'package:state_management/models/catalog.dart';
 import 'package:state_management/redux/reducers.dart';
-import 'package:state_management/screens/cart.dart';
 import 'package:state_management/screens/catalog.dart';
-import 'package:state_management/state/app_state.dart';
-import 'common/theme.dart';
+import 'package:redux_dev_tools/redux_dev_tools.dart';
+import 'models/catalog.dart';
 
 void main() {
-  final store = Store<AppState>(
-    appReducer,
-    initialState: AppState.initial(),
-  );
-  runApp(const MyApp());
+  final store = DevToolsStore<List<Item>>(cartItemsReducer, initialState: []);
+
+  runApp(MyApp(
+    store: store,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final DevToolsStore<List<Item>> store;
+
+  const MyApp({required this.store, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

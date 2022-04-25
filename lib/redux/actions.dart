@@ -1,25 +1,13 @@
-import 'package:state_management/models/cart.dart';
+import '../models/catalog.dart';
 
-class GetCatalogAction {
-  final List<CartModel> catalog;
+class AddItemAction {
+  final Item item;
 
-  GetCatalogAction(this.catalog);
+  AddItemAction(this.item);
 }
 
-class ToggleStateItemsAction {
-  final List<CartModel> items;
+class DeleteItemAction {
+  final Item item;
 
-  ToggleStateItemsAction(this.items);
-}
-
-class AddItemsAction {
-  final List<CartModel> items;
-
-  AddItemsAction(this.items);
-}
-
-class DeleteItemsAction {
-  final List<CartModel> items;
-
-  DeleteItemsAction(this.items);
+  DeleteItemAction(this.item);
 }

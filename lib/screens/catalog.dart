@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/models/cart.dart';
 import 'package:state_management/models/catalog.dart';
-import 'package:state_management/state/app_state.dart';
 
 class MyCatalog extends StatelessWidget {
   const MyCatalog({Key? key}) : super(key: key);
