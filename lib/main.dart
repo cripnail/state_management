@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:state_management/redux/reducers.dart';
-import 'package:state_management/screens/catalog.dart';
-import 'package:redux_dev_tools/redux_dev_tools.dart';
-import 'models/catalog.dart';
+import 'package:redux/redux.dart';
+import 'package:state_management/reducers/app_reducer.dart';
+import 'package:state_management/screens/cart_screen.dart';
+import 'package:state_management/screens/home.dart';
 
-void main() {
-  final store = DevToolsStore<List<Item>>(cartItemsReducer, initialState: []);
+import 'models/app_state.dart';
 
-  runApp(MyApp(
-    store: store,
-  ));
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final DevToolsStore<List<Item>> store;
+  final store = Store<AppState>(
+    appReducer,
+    initialState: const AppState(),
+  );
 
-  const MyApp({required this.store, Key? key}) : super(key: key);
+  MyApp({Key? key, store}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,11 @@ class MyApp extends StatelessWidget {
           fontFamily: 'ProductSans',
           primaryColor: const Color.fromRGBO(243, 113, 95, 1),
         ),
-        home: const MyCatalog(),
+        routes: <String, WidgetBuilder> {
+          '/': (_) => const HomeScreen(),
+          '/cart': (_) => const MyCart(),
+        },
+        home: const HomeScreen(),
       ),
     );
   }
