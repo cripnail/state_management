@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           '/': (_) => const HomeScreen(),
           '/cart': (_) => const MyCart(),
         },
-        home: const HomeScreen(),
+        // home: const HomeScreen(),
       ),
     );
   }
