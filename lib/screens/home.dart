@@ -38,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
     {'id': 14, 'name': 'Currying', 'price': '42\$'},
   ];
 
-  // is a function to check if product item is added to cart before or not
   bool _isSelected(Map productItem, List cartList) {
     List filterList =
         cartList.where((item) => item.id == productItem['id']).toList();
@@ -48,8 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return filterList.isNotEmpty ? true : false;
   }
 
-  // is a widget to render row of products list
-  Widget _buildProductRow({required Map item, required _ViewModel viewModel}) {
+  Widget _addButton({required Map item, required _ViewModel viewModel}) {
     bool isSelected = _isSelected(item, viewModel.cartList);
 
     return TextButton(
@@ -65,20 +63,47 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomeAppBar(
-        context: context,
-        title: const Text('Products'),
-      ),
-      body: StoreConnector<AppState, _ViewModel>(
-        converter: _ViewModel.fromStore,
-        builder: (_, _ViewModel _viewModel) {
-          return SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) =>
-                _buildProductRow(item: products[index], viewModel: _viewModel)),
-          );
-        },
-      ),
-    );
+        body: StoreConnector<AppState, _ViewModel>(
+            converter: _ViewModel.fromStore,
+            builder: (_, _ViewModel _viewModel) {
+              return CustomScrollView(slivers: [
+                HomeAppBar(),
+                const SliverToBoxAdapter(child: SizedBox(height: 12)),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                      (context, index) => _CatalogListItem(
+                          item: products[index], viewModel: _viewModel),
+                      childCount: products.length),
+                )
+              ]);
+            }));
+  }
+}
+
+class _CatalogListItem extends StatelessWidget {
+  const _CatalogListItem(
+      {Key? key, required Map item, required _ViewModel viewModel})
+      : super(key: key);
+
+  get item => item.id;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme.headline6;
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: LimitedBox(
+            maxHeight: 48,
+            child: Row(
+              children: [
+                AspectRatio(
+                    aspectRatio: 1, child: ColoredBox(color: item.color)),
+                const SizedBox(width: 24),
+                Expanded(child: Text('${item['name']}', style: textTheme)),
+                const SizedBox(width: 24),
+                _addButton(viewModel: _viewModel),
+              ],
+            )));
   }
 }
 
