@@ -1,7 +1,8 @@
+import '../models/cartItem.dart';
 import '../models/catalog.dart';
 import 'actions.dart';
 
-List<Item> cartItemsReducer(List<Item> items, dynamic action) {
+List<CartItem> cartItemsReducer(List<CartItem> items, dynamic action) {
   if (action is AddItemAction) {
     return addItem(items, action);
   } else if (action is DeleteItemAction) {
@@ -10,10 +11,10 @@ List<Item> cartItemsReducer(List<Item> items, dynamic action) {
   return items;
 }
 
-List<Item> addItem(List<Item> items, AddItemAction action) {
+List<CartItem> addItem(List<CartItem> items, AddItemAction action) {
   return List.from(items)..add(action.item);
 }
 
-List<Item> deleteItem(List<Item> items, DeleteItemAction action) {
+List<CartItem> deleteItem(List<CartItem> items, DeleteItemAction action) {
   return List.from(items)..remove(action.item);
 }
