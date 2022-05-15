@@ -1,13 +1,14 @@
-import '../models/catalog.dart';
+
+import '../models/cartItem.dart';
 
 class AddItemAction {
-  final Item item;
+  final CartItem item;
 
   AddItemAction(this.item);
 }
 
 class DeleteItemAction {
-  final Item item;
+  final CartItem item;
 
   DeleteItemAction(this.item);
 }

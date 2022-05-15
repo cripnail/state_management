@@ -1,5 +1,4 @@
 import '../models/cartItem.dart';
-import '../models/catalog.dart';
 import 'actions.dart';
 
 List<CartItem> cartItemsReducer(List<CartItem> items, dynamic action) {
