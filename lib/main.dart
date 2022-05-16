@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:state_management/reducers/app_reducer.dart';
-import 'package:state_management/screens/cart_screen.dart';
-import 'package:state_management/screens/home.dart';
+import 'package:state_management/screens/catalog.dart';
 
-import 'models/app_state.dart';
+import 'models/appState.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'ProductSans',
           primaryColor: const Color.fromRGBO(243, 113, 95, 1),
         ),
-        routes: <String, WidgetBuilder> {
+        routes: <String, WidgetBuilder>{
           '/': (_) => const HomeScreen(),
           '/cart': (_) => const MyCart(),
         },
