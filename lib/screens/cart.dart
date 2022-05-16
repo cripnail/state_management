@@ -89,20 +89,20 @@ class _CartTotal extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Observer(builder: (_) {
-              if (_homeStore.hasError) {
-                return const Center(
-                  child: Text('An error has occurred'),
-                );
-              } else if (_homeStore.loading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                return Text('\$${_cartStore.total.toStringAsFixed(2)}',
-                    style: hugeStyle);
-              }
-            }),
+            // Observer(builder: (_) {
+            //   if (_homeStore.hasError) {
+            //     return const Center(
+            //       child: Text('An error has occurred'),
+            //     );
+            //   } else if (_homeStore.loading) {
+            //     return const Center(
+            //       child: CircularProgressIndicator(),
+            //     );
+            //   } else {
+            //     return Text('\$${_cartStore.total.toStringAsFixed(2)}',
+            //         style: hugeStyle);
+            //   }
+            // }),
             const SizedBox(width: 24),
             TextButton(
               onPressed: () {

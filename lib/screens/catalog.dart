@@ -17,20 +17,90 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // products is a static list
   List<Map> products = [
-    {'id': 1, 'name': 'Code Smell', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 2, 'name': 'Control Flow', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 3, 'name': 'Interpreter', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 4, 'name': 'Recursion', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 5, 'name': 'Sprint', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 6, 'name': 'Spaghetti', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 7, 'name': 'Hydra Code', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 8, 'name': 'Hydra Code', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 9, 'name': 'Off-By-One', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 10, 'name': 'Scope', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 11, 'name': 'Closure', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 12, 'name': 'Automata', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 13, 'name': 'Bit Shift', 'price': '42\$', 'color': Colors.yellow},
-    {'id': 14, 'name': 'Currying', 'price': '42\$', 'color': Colors.yellow},
+    {
+      'id': 1,
+      'name': 'Code Smell',
+      'price': '42\$',
+      'color': Colors.deepPurpleAccent,
+    },
+    {
+      'id': 2,
+      'name': 'Control Flow',
+      'price': '42\$',
+      'color': Colors.blueGrey,
+    },
+    {
+      'id': 3,
+      'name': 'Interpreter',
+      'price': '42\$',
+      'color': Colors.redAccent,
+    },
+    {
+      'id': 4,
+      'name': 'Recursion',
+      'price': '42\$',
+      'color': Colors.green,
+    },
+    {
+      'id': 5,
+      'name': 'Sprint',
+      'price': '42\$',
+      'color': Colors.blueGrey,
+    },
+    {
+      'id': 6,
+      'name': 'Spaghetti',
+      'price': '42\$',
+      'color': Colors.lightBlueAccent,
+    },
+    {
+      'id': 7,
+      'name': 'Hydra Code',
+      'price': '42\$',
+      'color': Colors.pink,
+    },
+    {
+      'id': 8,
+      'name': 'Hydra Code',
+      'price': '42\$',
+      'color': Colors.white54,
+    },
+    {
+      'id': 9,
+      'name': 'Off-By-One',
+      'price': '42\$',
+      'color': Colors.brown,
+    },
+    {
+      'id': 10,
+      'name': 'Scope',
+      'price': '42\$',
+      'color': Colors.deepOrangeAccent,
+    },
+    {
+      'id': 11,
+      'name': 'Closure',
+      'price': '42\$',
+      'color': Colors.orangeAccent,
+    },
+    {
+      'id': 12,
+      'name': 'Automata',
+      'price': '42\$',
+      'color': Colors.orange,
+    },
+    {
+      'id': 13,
+      'name': 'Bit Shift',
+      'price': '42\$',
+      'color': Colors.lightGreenAccent,
+    },
+    {
+      'id': 14,
+      'name': 'Currying',
+      'price': '42\$',
+      'color': Colors.purple,
+    },
   ];
 
   @override

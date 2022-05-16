@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:state_management/reducers/app_reducer.dart';
+import 'package:state_management/screens/cart.dart';
 import 'package:state_management/screens/catalog.dart';
 
 import 'models/appState.dart';
