@@ -82,40 +82,33 @@ class _CartTotal extends StatelessWidget {
   Widget build(BuildContext context) {
     final hugeStyle =
         Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48);
-
-    return SizedBox(
-      height: 200,
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Observer(builder: (_) {
-            //   if (_homeStore.hasError) {
-            //     return const Center(
-            //       child: Text('An error has occurred'),
-            //     );
-            //   } else if (_homeStore.loading) {
-            //     return const Center(
-            //       child: CircularProgressIndicator(),
-            //     );
-            //   } else {
-            //     return Text('\$${_cartStore.total.toStringAsFixed(2)}',
-            //         style: hugeStyle);
-            //   }
-            // }),
-            const SizedBox(width: 24),
-            TextButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Buying not supported yet.')));
-              },
-              style: TextButton.styleFrom(primary: Colors.white),
-              child: const Text('BUY'),
+    return StoreConnector<AppState, _ViewModel>(
+        converter: _ViewModel.fromStore,
+        builder: (_, _ViewModel _viewModel) {
+          final total = _viewModel.cartList.fold<int>(0, (i, element) {
+            return i + element.price;
+          });
+          return SizedBox(
+            height: 200,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('\$${total.toStringAsFixed(2)}', style: hugeStyle),
+                  const SizedBox(width: 24),
+                  TextButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Buying not supported yet.')));
+                    },
+                    style: TextButton.styleFrom(primary: Colors.white),
+                    child: const Text('BUY'),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 }
 
