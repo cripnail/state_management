@@ -61,42 +61,36 @@ class _HomeScreenState extends State<HomeScreen> {
     },
     {
       'id': 8,
-      'name': 'Hydra Code',
-      'price': '42\$',
-      'color': Colors.white54,
-    },
-    {
-      'id': 9,
       'name': 'Off-By-One',
       'price': '42\$',
       'color': Colors.brown,
     },
     {
-      'id': 10,
+      'id': 9,
       'name': 'Scope',
       'price': '42\$',
       'color': Colors.deepOrangeAccent,
     },
     {
-      'id': 11,
+      'id': 10,
       'name': 'Closure',
       'price': '42\$',
       'color': Colors.orangeAccent,
     },
     {
-      'id': 12,
+      'id': 11,
       'name': 'Automata',
       'price': '42\$',
       'color': Colors.orange,
     },
     {
-      'id': 13,
+      'id': 12,
       'name': 'Bit Shift',
       'price': '42\$',
       'color': Colors.lightGreenAccent,
     },
     {
-      'id': 14,
+      'id': 13,
       'name': 'Currying',
       'price': '42\$',
       'color': Colors.purple,
@@ -114,8 +108,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SliverToBoxAdapter(child: SizedBox(height: 12)),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
-                      (context, index) => _CatalogListItem(
-                          item: products[index], viewModel: _viewModel),
+                      (context, index) =>
+                          NotificationListener<OverscrollIndicatorNotification>(
+                            onNotification: (overScroll) {
+                              overScroll.disallowIndicator();
+                              return true;
+                            },
+                            child: _CatalogListItem(
+                                item: products[index], viewModel: _viewModel),
+                          ),
                       childCount: products.length),
                 )
               ]);
@@ -127,7 +128,7 @@ class _MyAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      title: Text('Catalog', style: Theme.of(context).textTheme.headline1),
+      title: const Text('Catalog'),
       floating: true,
       actions: [
         IconButton(
@@ -148,20 +149,31 @@ bool _isSelected(Map productItem, List cartList) {
   return filterList.isNotEmpty ? true : false;
 }
 
-Widget _addButton({required Map item, required _ViewModel viewModel}) {
-  bool isSelected = _isSelected(item, viewModel.cartList);
-  return StoreConnector<AppState, _ViewModel>(
-      converter: _ViewModel.fromStore,
-      builder: (_, _ViewModel _viewModel) {
-        return TextButton(
-          // style: TextButton.styleFrom(onSurface: theme.primaryColor),
-          onPressed:
-              isSelected ? null : () => viewModel.onPressedCallback(item: item),
-          child: isSelected
-              ? const Icon(Icons.check, semanticLabel: 'ADDED')
-              : const Text('ADD'),
-        );
-      });
+class _AddButton extends StatelessWidget {
+  const _AddButton({Key? key, required this.viewModel, required this.item})
+      : super(key: key);
+
+  final _ViewModel viewModel;
+  final Map item;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    bool isSelected = _isSelected(item, viewModel.cartList);
+    return StoreConnector<AppState, _ViewModel>(
+        converter: _ViewModel.fromStore,
+        builder: (_, _ViewModel _viewModel) {
+          return TextButton(
+            style: TextButton.styleFrom(onSurface: theme.primaryColor),
+            onPressed: isSelected
+                ? null
+                : () => viewModel.onPressedCallback(item: item),
+            child: isSelected
+                ? const Icon(Icons.check, semanticLabel: 'ADDED')
+                : const Text('ADD'),
+          );
+        });
+  }
 }
 
 class _CatalogListItem extends StatelessWidget {
@@ -185,7 +197,7 @@ class _CatalogListItem extends StatelessWidget {
                 const SizedBox(width: 24),
                 Expanded(child: Text('${item['name']}', style: textTheme)),
                 const SizedBox(width: 24),
-                _addButton(item: item, viewModel: viewModel),
+                _AddButton(item: item, viewModel: viewModel),
               ],
             )));
   }
