@@ -13,10 +13,9 @@ class MyCart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cart', style: Theme.of(context).textTheme.headline1),
-        backgroundColor: Colors.white,
+        title: const Text('Cart'),
       ),
-      body: Container(
+      body: ColoredBox(
         color: Colors.yellow,
         child: Column(
           children: [
@@ -101,7 +100,7 @@ class _CartTotal extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text('Buying not supported yet.')));
                     },
-                    style: TextButton.styleFrom(primary: Colors.white),
+                    style: TextButton.styleFrom(primary: Colors.black),
                     child: const Text('BUY'),
                   ),
                 ],
