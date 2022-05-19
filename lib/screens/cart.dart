@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:state_management/stores/home_store.dart';
 import 'package:state_management/stores/shopping_cart.dart';
 
-
 class MyCart extends StatelessWidget {
   const MyCart({Key? key}) : super(key: key);
 
@@ -12,7 +11,7 @@ class MyCart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cart', style: Theme.of(context).textTheme.headline1),
+        title: const Text('Cart'),
         backgroundColor: Colors.white,
       ),
       body: Container(
@@ -109,7 +108,7 @@ class _CartTotal extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Buying not supported yet.')));
               },
-              style: TextButton.styleFrom(primary: Colors.white),
+              style: ElevatedButton.styleFrom(primary: Colors.black),
               child: const Text('BUY'),
             ),
           ],
