@@ -39,17 +39,23 @@ class _CartList extends StatelessWidget {
       {required CartItem item,
       required _ViewModel viewModel,
       required BuildContext context}) {
-    return ListTile(
-        leading: const Icon(Icons.done),
-        title: Text(item.name
-            // style: itemNameStyle,
-            ),
-        trailing: IconButton(
-          icon: const Icon(Icons.remove_circle_outline),
-          onPressed: () {
-            viewModel.deleteItemCallback(item: item);
-          },
-        ));
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (overScroll) {
+        overScroll.disallowIndicator();
+        return true;
+      },
+      child: ListTile(
+          leading: const Icon(Icons.done),
+          title: Text(item.name
+              // style: itemNameStyle,
+              ),
+          trailing: IconButton(
+            icon: const Icon(Icons.remove_circle_outline),
+            onPressed: () {
+              viewModel.deleteItemCallback(item: item);
+            },
+          )),
+    );
   }
 
   @override
