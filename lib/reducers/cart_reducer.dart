@@ -1,6 +1,6 @@
 import 'package:redux/redux.dart';
 import '../actions/action.dart';
-import '../models/cartItem.dart';
+import '../models/cart_item.dart';
 
 final cartListReducer = combineReducers<List<CartItem>>([
   TypedReducer<List<CartItem>, AddItemAction>(_addItem),

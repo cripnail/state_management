@@ -5,7 +5,7 @@ import 'package:state_management/reducers/app_reducer.dart';
 import 'package:state_management/screens/cart.dart';
 import 'package:state_management/screens/catalog.dart';
 
-import 'models/appState.dart';
+import 'models/app_state.dart';
 
 void main() => runApp(MyApp());
 
