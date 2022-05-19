@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'cart_item.dart';
+import 'cartItem.dart';
 
 @immutable
 class AppState {

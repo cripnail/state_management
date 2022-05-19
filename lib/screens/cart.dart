@@ -4,7 +4,7 @@ import 'package:redux/redux.dart';
 
 import '../actions/cart_action.dart';
 import '../models/app_state.dart';
-import '../models/cart_item.dart';
+import '../models/cartItem.dart';
 
 class MyCart extends StatelessWidget {
   const MyCart({Key? key}) : super(key: key);
@@ -35,28 +35,28 @@ class MyCart extends StatelessWidget {
 }
 
 class _CartList extends StatelessWidget {
-  Widget _buildCartItem(
-      {required CartItem item,
-      required _ViewModel viewModel,
-      required BuildContext context}) {
-    return NotificationListener<OverscrollIndicatorNotification>(
-      onNotification: (overScroll) {
-        overScroll.disallowIndicator();
-        return true;
-      },
-      child: ListTile(
-          leading: const Icon(Icons.done),
-          title: Text(item.name
-              // style: itemNameStyle,
-              ),
-          trailing: IconButton(
-            icon: const Icon(Icons.remove_circle_outline),
-            onPressed: () {
-              viewModel.deleteItemCallback(item: item);
-            },
-          )),
-    );
-  }
+  // Widget _buildCartItem(
+  //     {required CartItem item,
+  //     required _ViewModel viewModel,
+  //     required BuildContext context}) {
+  //   return NotificationListener<OverscrollIndicatorNotification>(
+  //     onNotification: (overScroll) {
+  //       overScroll.disallowIndicator();
+  //       return true;
+  //     },
+  //     child: ListTile(
+  //         leading: const Icon(Icons.done),
+  //         title: Text(item.name
+  //             // style: itemNameStyle,
+  //             ),
+  //         trailing: IconButton(
+  //           icon: const Icon(Icons.remove_circle_outline),
+  //           onPressed: () {
+  //             viewModel.deleteItemCallback(item: item);
+  //           },
+  //         )),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class _CartList extends StatelessWidget {
           } else {
             return ListView.builder(
               itemCount: _viewModel.cartList.length,
-              itemBuilder: (_, index) => _buildCartItem(
+              itemBuilder: (_, index) => _BuildCartItem(
                   item: _viewModel.cartList[index],
                   viewModel: _viewModel,
                   context: context),
@@ -114,6 +114,41 @@ class _CartTotal extends StatelessWidget {
             ),
           );
         });
+  }
+}
+
+class _BuildCartItem extends StatelessWidget {
+  const _BuildCartItem({
+    Key? key,
+    required this.viewModel,
+    required this.item,
+    required BuildContext context,
+  }) : super(key: key);
+
+  final _ViewModel viewModel;
+  final CartItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    final itemNameStyle = Theme.of(context).textTheme.headline6;
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (overScroll) {
+        overScroll.disallowIndicator();
+        return true;
+      },
+      child: ListTile(
+          leading: const Icon(Icons.done),
+          title: Text(
+            item.name,
+            style: itemNameStyle,
+          ),
+          trailing: IconButton(
+            icon: const Icon(Icons.remove_circle_outline),
+            onPressed: () {
+              viewModel.deleteItemCallback(item: item);
+            },
+          )),
+    );
   }
 }
 

@@ -5,7 +5,7 @@ import 'package:redux/redux.dart';
 
 import '../actions/cart_action.dart';
 import '../models/app_state.dart';
-import '../models/cart_item.dart';
+import '../models/cartItem.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
