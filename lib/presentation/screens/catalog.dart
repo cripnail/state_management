@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-import '../actions/cart_action.dart';
-import '../models/app_state.dart';
-import '../models/cartItem.dart';
+import '../../data/models/app_state.dart';
+import '../../data/models/cartItem.dart';
+import '../../domain/actions/cart_action.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

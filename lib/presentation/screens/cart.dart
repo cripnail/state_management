@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-import '../actions/cart_action.dart';
-import '../models/app_state.dart';
-import '../models/cartItem.dart';
+import '../../data/models/app_state.dart';
+import '../../data/models/cartItem.dart';
+import '../../domain/actions/cart_action.dart';
 
 class MyCart extends StatelessWidget {
   const MyCart({Key? key}) : super(key: key);
@@ -35,29 +35,6 @@ class MyCart extends StatelessWidget {
 }
 
 class _CartList extends StatelessWidget {
-  // Widget _buildCartItem(
-  //     {required CartItem item,
-  //     required _ViewModel viewModel,
-  //     required BuildContext context}) {
-  //   return NotificationListener<OverscrollIndicatorNotification>(
-  //     onNotification: (overScroll) {
-  //       overScroll.disallowIndicator();
-  //       return true;
-  //     },
-  //     child: ListTile(
-  //         leading: const Icon(Icons.done),
-  //         title: Text(item.name
-  //             // style: itemNameStyle,
-  //             ),
-  //         trailing: IconButton(
-  //           icon: const Icon(Icons.remove_circle_outline),
-  //           onPressed: () {
-  //             viewModel.deleteItemCallback(item: item);
-  //           },
-  //         )),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     // final itemNameStyle = Theme.of(context).textTheme.headline6;

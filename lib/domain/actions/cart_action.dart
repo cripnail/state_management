@@ -1,4 +1,4 @@
-import '../models/cartItem.dart';
+import '../../data/models/cartItem.dart';
 
 class AddItemAction {
   CartItem cartItem;
